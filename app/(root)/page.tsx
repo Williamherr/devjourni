@@ -1,11 +1,11 @@
 import SideBar from "@/components/layouts/SideBar";
-import Editor from "@/components/editor/quill";
+import TextEditor from "../novel/components/Editor";
 
 export default function Home() {
   return (
     <div className="flex flex-row h-screen">
       <SideBar />
-      <Editor />
+      <TextEditor />
     </div>
   );
 }
