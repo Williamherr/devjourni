@@ -3,9 +3,9 @@ import { Inter } from "next/font/google";
 import "@/styles/globals.css";
 import "@/styles/prosemirror.css";
 import "@/styles/globals.css";
-import { ThemeProvider } from "@/components/theme/theme-provider";
 import { ReactNode } from "react";
 import Providers from "./providers";
+import SideBar from "@/components/layouts/SideBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,7 +26,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          <div className="flex flex-row h-screen">
+            <SideBar />
+            {children}
+          </div>
+        </Providers>
       </body>
     </html>
   );
