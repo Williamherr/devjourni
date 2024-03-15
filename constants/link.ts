@@ -22,7 +22,7 @@ export const navBarLinks = [
 export const leftSideBarLinks = {
   top: [
     { name: "Journal", icon: ReaderIcon, path: "/" },
-    { name: "New Notes", icon: Pencil2Icon, path: "/profile" },
+    { name: "New page", icon: Pencil2Icon, path: "/new-page" },
   ],
   bottom: [{ name: "Settings", icon: GearIcon, path: "/settings" }],
 };
