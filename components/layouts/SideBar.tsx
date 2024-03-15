@@ -1,48 +1,42 @@
-"use client";
-
-import { usePathname, useRouter } from "next/navigation";
 import { Button } from "../ui/button";
 import { leftSideBarLinks as routes } from "@/constants/link";
+import { SideButton } from "@/lib/types";
 import Link from "next/link";
+import { ReaderIcon } from "@radix-ui/react-icons";
 
 const SideBar = () => {
-  const router = useRouter();
-  const pathname = usePathname();
+  const sideButton = ({ name, icon: Icon, path }: SideButton, key: number) => (
+    <Button
+      variant={"ghost"}
+      key={key}
+      className="w-full flex justify-start"
+      asChild
+    >
+      <Link href={path}>
+        {Icon !== undefined && Icon !== null ? (
+          <Icon className="mr-2 h-4 w-4" />
+        ) : (
+          <ReaderIcon className="mr-2 h-4 w-4" />
+        )}
+        {name}
+      </Link>
+    </Button>
+  );
 
   return (
-    <div className="w-fit max-w-xs bg-red-500">
-      <div className="flex flex-col items-start p-4 h-full justify-between">
-        <div className="space-y-2 w-full">
-          {routes.top.map((route, index) => (
-            // <Button
-            //   variant={"ghost"}
-            //   key={index}
-            //   className="w-full flex justify-start"
-            // >
-            //   <route.icon className="mr-2 h-4 w-4" />
-            //   {route.name}
-            // </Button>
-            <Link
-              href={route.path}
-              key={index}
-              className="w-full flex justify-start items-center hover:opacity-50 hover:bg-gray-500 p-1"
-            >
-              <route.icon className="mr-2 h-4 w-4" />
-              {route.name}
-            </Link>
-          ))}
+    <div className="w-fit max-w-xs bg-neutral-700">
+      <div className="flex flex-col items-start p-1 h-full justify-between">
+        <div className="w-full">
+          {routes.top.map((route, index) => sideButton({ ...route }, index))}
+          <div className="mt-6">
+            {routes.pages.map((route, index) =>
+              sideButton({ ...route }, index)
+            )}
+          </div>
         </div>
-        <div className="space-y-2 w-full">
-          {routes.bottom.map((route, index) => (
-            <Button
-              variant={"ghost"}
-              key={index}
-              className="w-full flex justify-start"
-            >
-              <route.icon className="mr-2 h-4 w-4" />
-              {route.name}
-            </Button>
-          ))}
+
+        <div className="w-full">
+          {routes.bottom.map((route, index) => sideButton({ ...route }, index))}
         </div>
       </div>
     </div>
