@@ -39,6 +39,7 @@ export default function Providers({ children }: { children: ReactNode }) {
       <AppContext.Provider
         value={{
           font,
+          // @ts-ignore
           setFont,
         }}
       >
