@@ -1,5 +1,10 @@
 export const defaultEditorContent = {
   type: "doc",
+  content: [{ type: "paragraph" }],
+};
+
+const novelEditorContent = {
+  type: "doc",
   content: [
     {
       type: "heading",
