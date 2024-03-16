@@ -15,6 +15,11 @@ const AICompletionCommands = ({
   onDiscard: () => void;
 }) => {
   const { editor } = useEditor();
+
+  if (!editor) {
+    throw new Error("Editor is not available");
+  }
+
   return (
     <>
       <CommandGroup>

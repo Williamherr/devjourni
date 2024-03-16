@@ -26,6 +26,10 @@ export function AISelector({ open, onOpenChange }: AISelectorProps) {
   const { editor } = useEditor();
   const [inputValue, setInputValue] = useState("");
 
+  if (!editor) {
+    throw new Error("Editor is not available");
+  }
+
   const { completion, complete, isLoading } = useCompletion({
     // id: "novel",
     api: "/api/generate",

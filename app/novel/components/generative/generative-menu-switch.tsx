@@ -18,6 +18,10 @@ const GenerativeMenuSwitch = ({
 }: GenerativeMenuSwitchProps) => {
   const { editor } = useEditor();
 
+  if (!editor) {
+    throw new Error("Editor is not available");
+  }
+
   useEffect(() => {
     if (!open) removeAIHighlight(editor);
   }, [open]);
