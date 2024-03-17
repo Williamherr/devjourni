@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@/styles/globals.css";
 import "@/styles/prosemirror.css";
-import "@/styles/globals.css";
 import { ReactNode } from "react";
 import Providers from "./providers";
 import SideBar from "@/components/layouts/SideBar";

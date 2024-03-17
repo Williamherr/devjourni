@@ -1,6 +1,5 @@
-import SideBar from "@/components/layouts/SideBar";
-import TextEditor from "../novel/components/Editor";
+//Need to redirect to the latested edited page
 
 export default function Home() {
-  return <TextEditor />;
+  return <div>Home</div>;
 }
