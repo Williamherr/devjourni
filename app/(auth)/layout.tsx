@@ -4,7 +4,6 @@ import "@/styles/globals.css";
 import "@/styles/prosemirror.css";
 import { ReactNode } from "react";
 import Providers from "../providers";
-import SideBar from "@/components/layouts/SideBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,10 +25,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en" suppressHydrationWarning>
       <body>
         <Providers>
-          <div className="flex flex-row h-screen">
-            <SideBar />
-            {children}
-          </div>
+          <div className="flex flex-row h-screen">{children}</div>
         </Providers>
       </body>
     </html>

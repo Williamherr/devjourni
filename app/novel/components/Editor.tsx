@@ -32,7 +32,13 @@ import { ImageResizer } from "./image-resizer";
 
 const extensions = [...defaultExtensions, slashCommand];
 
-const TextEditor = ({ doc }: { doc: null | JSONContent }) => {
+const TextEditor = ({
+  doc,
+  pageId,
+}: {
+  doc: null | JSONContent;
+  pageId: number;
+}) => {
   const [saveStatus, setSaveStatus] = useState("Saved");
   const [openNode, setOpenNode] = useState(false);
   const [openColor, setOpenColor] = useState(false);
@@ -43,7 +49,14 @@ const TextEditor = ({ doc }: { doc: null | JSONContent }) => {
     async (editor: EditorInstance) => {
       const json = editor.getJSON();
       window.localStorage.setItem("novel-content", JSON.stringify(json));
-      setSaveStatus("Saved");
+
+      fetch(`http://localhost:3000/api/pages/${pageId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ doc: json }),
+      }).finally(() => setSaveStatus("Saved"));
     },
     500
   );

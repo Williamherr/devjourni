@@ -5,7 +5,7 @@ import Link from "next/link";
 
 import { Button } from "../ui/button";
 import { leftSideBarLinks as routes } from "@/constants/link";
-import { SideButton } from "@/lib/types";
+import { SideButton } from "@/types/custom";
 import { ReaderIcon } from "@radix-ui/react-icons";
 
 import useSWR from "swr";
@@ -31,10 +31,10 @@ const SideBar = () => {
     </Button>
   );
 
-  const uid = "2ce20d56-268a-445e-8f4c-bdb4c9b22d08";
-  const { data, error, isLoading } = useSWR(`/api/pages?uid=${uid}`, fetcher);
+  const { data, error, isLoading } = useSWR(`/api/pages`, fetcher);
   if (error) return <div>failed to load</div>;
   if (isLoading) return <div>loading...</div>;
+
   return (
     !isLoading && (
       <div className="flex flex-col items-start p-1 h-full justify-between bg-neutral-700">
@@ -44,7 +44,7 @@ const SideBar = () => {
           )}
         </div>
         <ScrollArea className="my-4 border-t-2 border-b-2 flex-1">
-          {data.pages.rows.map((route: SideButton, index: any) =>
+          {data.pages?.map((route: SideButton, index: any) =>
             sideButton({ ...route }, index)
           )}
         </ScrollArea>

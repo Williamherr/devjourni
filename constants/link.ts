@@ -1,4 +1,4 @@
-import { SideButton } from "@/lib/types";
+import { SideButton } from "@/types/custom";
 import { GearIcon, Pencil2Icon, ReaderIcon } from "@radix-ui/react-icons";
 
 export const navBarLinks = [
