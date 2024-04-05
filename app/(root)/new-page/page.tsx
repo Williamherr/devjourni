@@ -9,7 +9,7 @@ function DialogDemo() {
       <DialogTrigger asChild>
         <Button variant="outline">Edit Profile</Button>
       </DialogTrigger>
-      <DialogContent className="w-full"></DialogContent>
+      <DialogContent className="w-full">Hellow world</DialogContent>
     </Dialog>
   );
 }

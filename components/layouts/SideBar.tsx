@@ -13,7 +13,10 @@ import { fetcher } from "@/lib/utils";
 import { ScrollArea } from "../ui/scroll-area";
 
 const SideBar = () => {
-  const sideButton = ({ name, icon: Icon, path }: SideButton, key: number) => (
+  const sideButtonWithRoute = (
+    { name, icon: Icon, path }: SideButton,
+    key: number
+  ) => (
     <Button
       variant={"ghost"}
       key={key}
@@ -40,17 +43,19 @@ const SideBar = () => {
       <div className="flex flex-col items-start p-1 h-full justify-between bg-neutral-700">
         <div className="w-full">
           {routes.top.map((route: SideButton, index: any) =>
-            sideButton({ ...route }, index)
+            sideButtonWithRoute({ ...route }, index)
           )}
         </div>
         <ScrollArea className="my-4 border-t-2 border-b-2 flex-1">
           {data.pages?.map((route: SideButton, index: any) =>
-            sideButton({ ...route }, index)
+            sideButtonWithRoute({ ...route }, index)
           )}
         </ScrollArea>
 
         <div className="w-full">
-          {routes.bottom.map((route, index) => sideButton({ ...route }, index))}
+          {routes.bottom.map((route, index) =>
+            sideButtonWithRoute({ ...route }, index)
+          )}
         </div>
       </div>
     )
