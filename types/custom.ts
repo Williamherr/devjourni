@@ -1,10 +1,10 @@
 import { IconProps } from "@radix-ui/react-icons/dist/types";
 import { ForwardRefExoticComponent, RefAttributes } from "react";
 
-type SideButton = {
+type Pages = {
   name: string;
   icon?: ForwardRefExoticComponent<IconProps & RefAttributes<SVGSVGElement>>;
-  path: string;
+  id: string;
 };
 
-export type { SideButton };
+export type { Pages };

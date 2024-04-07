@@ -18,27 +18,28 @@ export const {
         username: { label: "Username", type: "text", placeholder: "Username" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials, req) {
-        // Add logic here to look up the user from the credentials supplied
+      // Need Fixing
+      // async authorize(credentials, req) {
+      //   // Add logic here to look up the user from the credentials supplied
 
-        const user = await sql`SELECT * FROM Users WHERE username = ${
-          credentials.username
-        } AND password = crypt(${credentials.password.toString()}, password`;
+      //   const user = await sql`SELECT * FROM Users WHERE username = ${
+      //     credentials.username
+      //   } AND password = crypt(${credentials.password.toString()}, password`;
 
-        console.log(user);
-        if (user) {
-          return user;
-        } else {
-          return null;
-        }
-      },
+      //   console.log(user);
+      //   if (user) {
+      //     return user;
+      //   } else {
+      //     return null;
+      //   }
+      // },
     }),
     GitHub,
     GoogleProvider,
   ],
   events: {
     async createUser({ user }) {
-      createPages(user.id ?? "", null);
+      createPages(user.id ?? "", null, null);
     },
   },
   callbacks: {

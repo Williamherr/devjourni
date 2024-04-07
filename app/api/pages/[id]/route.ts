@@ -27,7 +27,6 @@ export async function PUT(
   request: Request,
   { params }: { params: { id: number } }
 ) {
-  console.log("Updating");
   const session = await auth();
   const uid = session?.user?.id ?? "";
   const { id: pageId } = params;

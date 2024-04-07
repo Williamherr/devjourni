@@ -3,24 +3,28 @@ import { db, pages } from "./schema";
 import { and, eq } from "drizzle-orm";
 import { isNullOrEmpty } from "@/lib/snippets";
 
-export const createPages = async (uid: string, docName: string | null) => {
-  if (isNullOrEmpty(uid)) return null;
-  const pageId = await db
+export const createPages = async (
+  uid: string,
+  pageName: string | null,
+  doc: JSON | null
+): Promise<number> => {
+  if (isNullOrEmpty(uid)) return 0;
+  const pageId: { insertedId: number }[] = await db
     .insert(pages)
     .values({
       uid: uid,
-      name: docName || "Untitled",
-      doc: JSON.stringify(defaultEditorContent),
+      name: pageName || "Untitled",
+      doc: doc ?? JSON.stringify(defaultEditorContent),
       lastupdate: new Date(),
     })
     .returning({ insertedId: pages.id });
-  return pageId;
+  return pageId[0].insertedId;
 };
 
 export const getAllPages = async (uid: string) => {
   if (isNullOrEmpty(uid)) return null;
   const allPage = await db
-    .select({ path: pages.id, name: pages.name })
+    .select({ id: pages.id, name: pages.name })
     .from(pages)
     .where(eq(pages.uid, uid));
 

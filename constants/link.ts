@@ -1,6 +1,3 @@
-import { SideButton } from "@/types/custom";
-import { GearIcon, Pencil2Icon, ReaderIcon } from "@radix-ui/react-icons";
-
 export const navBarLinks = [
   {
     route: "/",
@@ -20,12 +17,11 @@ export const navBarLinks = [
   },
 ];
 
-export const leftSideBarLinks = {
-  top: [
-    { name: "Journal", icon: ReaderIcon, path: "/" },
-    { name: "New page", icon: Pencil2Icon, path: "/new-page" },
-  ] as SideButton[],
-  bottom: [
-    { name: "Settings", icon: GearIcon, path: "/settings" },
-  ] as SideButton[],
-};
+// export const leftSideBarLinks = {
+//   top: [
+//     { name: "New page", icon: Pencil2Icon, path: "/" },
+//     { name: "Settings", icon: GearIcon, path: "/" },
+//   ] as SideButton[],
+// };
+
+export const leftSideBarLinks = ["New page", "Settings"];
