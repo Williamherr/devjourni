@@ -1,6 +1,6 @@
 import { defaultEditorContent } from "@/lib/content";
 import { db, pages } from "./schema";
-import { and, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import { isNullOrEmpty } from "@/lib/snippets";
 
 export const createPages = async (
@@ -40,4 +40,26 @@ export const updateDoc = async (uid: string, id: number, doc: JSON) => {
     .where(and(eq(pages.uid, uid), eq(pages.id, id)));
 
   return updatedPage;
+};
+
+export const deleteDoc = async (uid: string, id: number) => {
+  if (isNullOrEmpty(uid) || isNullOrEmpty(id)) return null;
+
+  const deletedPage = await db
+    .delete(pages)
+    .where(and(eq(pages.uid, uid), eq(pages.id, id)));
+
+  return deletedPage;
+};
+
+export const getRecentPage = async (uid: string) => {
+  if (isNullOrEmpty(uid)) return null;
+  const page = await db
+    .select({ id: pages.id })
+    .from(pages)
+    .orderBy(desc(pages.lastupdate))
+    .where(eq(pages.uid, uid))
+    .limit(1);
+
+  return page[0].id;
 };
