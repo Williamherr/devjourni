@@ -13,6 +13,7 @@ import {
   Pencil2Icon,
 } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
+import { mutate } from "swr";
 
 export function PageMenu({ id }: { id: number | string }) {
   const router = useRouter();
@@ -33,10 +34,10 @@ export function PageMenu({ id }: { id: number | string }) {
       }
 
       const data = await response.json();
-      console.log(data.recentId);
 
       if (data.recentId !== 0) {
         router.push(`/${data.recentId}`);
+        mutate(`/api/pages`);
       }
       console.log("done");
     } catch (error: any) {

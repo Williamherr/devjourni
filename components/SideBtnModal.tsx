@@ -7,6 +7,7 @@ import { GearIcon, Pencil2Icon } from "@radix-ui/react-icons";
 import { Input } from "./ui/input";
 import TextEditor from "@/app/novel/components/Editor";
 import { useRouter } from "next/navigation";
+import { mutate } from "swr";
 
 interface PageCount {
   id: number;
@@ -35,8 +36,9 @@ const CreatePages = () => {
       .then((data: PageCount) => {
         let id = data.id;
         if (id != 0) {
-          router.push(`/${id}`);
           setOpen(false);
+          router.push(`/${id}`);
+          mutate(`/api/pages`);
         }
       });
   };
