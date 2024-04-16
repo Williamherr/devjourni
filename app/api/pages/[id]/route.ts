@@ -53,10 +53,8 @@ export async function DELETE(
   try {
     if (isNullOrEmpty(uid)) throw new Error("There are no uid");
     if (isNullOrEmpty(deltedPageId)) throw new Error("There are no pageId");
-    await deleteDoc(uid, deltedPageId);
 
-    console.log(deltedPageId);
-    console.log(pageId);
+    await deleteDoc(uid, deltedPageId);
 
     if (pageId == deltedPageId) {
       const recentId = await getRecentPage(uid);

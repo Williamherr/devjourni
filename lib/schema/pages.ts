@@ -26,6 +26,7 @@ export const getAllPages = async (uid: string) => {
   const allPage = await db
     .select({ id: pages.id, name: pages.name })
     .from(pages)
+    .orderBy(desc(pages.lastupdate))
     .where(eq(pages.uid, uid));
 
   return allPage;
