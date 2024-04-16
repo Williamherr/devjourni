@@ -11,6 +11,7 @@ import { Toaster } from "sonner";
 // import { Analytics } from "@vercel/analytics/react";
 import useLocalStorage from "@/hooks/use-local-storage";
 import { SessionProvider, useSession } from "next-auth/react";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 
 export const AppContext = createContext<{
   font: string;
@@ -60,7 +61,7 @@ function Auth({ children }: { children: ReactNode }) {
   const { status } = useSession({ required: true });
 
   if (status === "loading") {
-    return <div>Loading...</div>;
+    return <LoadingSpinner size={45} className="relative m-auto" />;
   }
 
   return children;

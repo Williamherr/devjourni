@@ -3,6 +3,8 @@
 import TextEditor from "@/app/novel/components/Editor";
 import useSWR from "swr";
 import { fetcher } from "@/lib/utils";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import EmptyState from "@/components/empty-state";
 
 function Page({ params }: { params: { pageId: number } }) {
   const { data, error, isLoading } = useSWR(
@@ -10,8 +12,9 @@ function Page({ params }: { params: { pageId: number } }) {
     fetcher
   );
 
-  if (error) return <div>failed to load</div>;
-  if (isLoading) return <div>loading...</div>;
+  if (error) return <EmptyState />;
+  if (isLoading)
+    return <LoadingSpinner size={45} className="relative m-auto" />;
 
   return (
     !isLoading && (

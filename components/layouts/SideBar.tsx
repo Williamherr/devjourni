@@ -12,6 +12,7 @@ import { fetcher } from "@/lib/utils";
 import { ScrollArea } from "../ui/scroll-area";
 import { CreatePages, Settings } from "../SideBtnModal";
 import { PageMenu } from "../PageMenu";
+import { LoadingSpinner } from "../ui/loading-spinner";
 
 const SideBar = () => {
   const sideBarButtonPages = ({ name, icon: Icon, id }: Pages, key: number) => (
@@ -21,7 +22,7 @@ const SideBar = () => {
         variant: "ghost",
       })} !justify-between gap-4 !flex`}
     >
-      <span className="hover:bg-slate-700 rounded-sm p-1">
+      <span className="hover:bg-slate-700 rounded-sm p-1 w-full">
         <Link href={id.toString()} className="flex justify-start items-center">
           {Icon !== undefined && Icon !== null ? (
             <Icon className="mr-2 h-4 w-4" />
@@ -50,7 +51,8 @@ const SideBar = () => {
 
   const { data, error, isLoading } = useSWR(`/api/pages`, fetcher);
   if (error) return <div>failed to load</div>;
-  if (isLoading) return <div>loading...</div>;
+  if (isLoading)
+    return <LoadingSpinner size={45} className="relative m-auto" />;
 
   return (
     !isLoading && (
