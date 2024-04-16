@@ -13,6 +13,7 @@ import { ScrollArea } from "../ui/scroll-area";
 import { CreatePages, Settings } from "../SideBtnModal";
 import { PageMenu } from "../PageMenu";
 import { LoadingSpinner } from "../ui/loading-spinner";
+import EmptyState from "../empty-state";
 
 const SideBar = () => {
   const sideBarButtonPages = ({ name, icon: Icon, id }: Pages, key: number) => (
@@ -50,7 +51,7 @@ const SideBar = () => {
   };
 
   const { data, error, isLoading } = useSWR(`/api/pages`, fetcher);
-  if (error) return <div>failed to load</div>;
+  if (error) return <EmptyState />;
   if (isLoading)
     return <LoadingSpinner size={45} className="relative m-auto" />;
 
