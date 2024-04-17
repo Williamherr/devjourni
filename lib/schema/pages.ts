@@ -43,6 +43,17 @@ export const updateDoc = async (uid: string, id: number, doc: JSON) => {
   return updatedPage;
 };
 
+export const updatePageName = async (uid: string, id: number, name: string) => {
+  if (isNullOrEmpty(uid) || isNullOrEmpty(id)) return null;
+
+  const updatedPage = await db
+    .update(pages)
+    .set({ name: name })
+    .where(and(eq(pages.uid, uid), eq(pages.id, id)));
+
+  return updatedPage;
+};
+
 export const deleteDoc = async (uid: string, id: number) => {
   if (isNullOrEmpty(uid) || isNullOrEmpty(id)) return null;
 
