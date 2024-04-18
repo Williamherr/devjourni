@@ -51,7 +51,7 @@ const TextEditor = ({
       window.localStorage.setItem("novel-content", JSON.stringify(json));
       if (!pageId) return;
 
-      fetch(`http://localhost:3000/api/pages/${pageId}`, {
+      fetch(`api/pages/${pageId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
