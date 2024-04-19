@@ -7,8 +7,8 @@ import {
   serial,
   json,
 } from "drizzle-orm/pg-core";
+import type { AdapterAccount } from "next-auth/adapters";
 import { drizzle } from "drizzle-orm/vercel-postgres";
-import type { AdapterAccount } from "@auth/core/adapters";
 import { sql } from "@vercel/postgres";
 
 export const db = drizzle(sql);

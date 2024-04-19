@@ -1,40 +1,50 @@
 import NextAuth from "next-auth";
 import GitHub from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
-import CredentialsProvider from "next-auth/providers/credentials";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { db } from "@/lib/schema/schema";
 import { createPages } from "./lib/schema/pages";
+import bcrypt from "bcrypt";
+import { getUser } from "./lib/schema/user";
+import Credentials from "next-auth/providers/credentials";
 
-export const {
-  handlers: { GET, POST },
-  auth,
-} = NextAuth({
+export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: DrizzleAdapter(db),
   providers: [
-    CredentialsProvider({
-      name: "Credentials",
+    Credentials({
+      // You can specify which fields should be submitted, by adding keys to the `credentials` object.
+      // e.g. domain, username, password, 2FA token, etc.
       credentials: {
-        username: { label: "Username", type: "text", placeholder: "Username" },
-        password: { label: "Password", type: "password" },
+        email: {},
+        password: {},
       },
-      // Need Fixing
-      // async authorize(credentials, req) {
-      //   // Add logic here to look up the user from the credentials supplied
+      authorize: async (credentials) => {
+        let user = null;
 
-      //   const user = await sql`SELECT * FROM Users WHERE username = ${
-      //     credentials.username
-      //   } AND password = crypt(${credentials.password.toString()}, password`;
+        // // logic to salt and hash password
+        // const salt = await bcrypt.genSalt(10);
+        // const hashedPassword = await bcrypt.hash(
+        //   credentials.password as string,
+        //   salt
+        // );
 
-      //   console.log(user);
-      //   if (user) {
-      //     return user;
-      //   } else {
-      //     return null;
-      //   }
-      // },
+        // // logic to verify if user exists
+        // user = await getUser(credentials.email as string, hashedPassword);
+
+        if (!user) {
+          // No user found, so this is their first attempt to login
+          // meaning this is also the place you could do registration
+          throw new Error("User not found.");
+        }
+
+        // return user object with the their profile data
+        return user;
+      },
     }),
-    GitHub,
+    GitHub({
+      clientId: process.env.AUTH_GITHUB_ID,
+      clientSecret: process.env.AUTH_GITHUB_SECRET,
+    }),
     GoogleProvider,
   ],
   events: {
