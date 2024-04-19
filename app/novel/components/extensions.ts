@@ -13,6 +13,13 @@ import { UploadImagesPlugin } from "novel/plugins";
 
 import { cx } from "class-variance-authority";
 
+import { CodeBlockLowlight } from "@tiptap/extension-code-block-lowlight";
+import { common, createLowlight } from "lowlight";
+import "highlight.js/styles/github-dark-dimmed.css";
+import { customCodeBlock } from "./custom-code-block";
+import { ReactNodeViewRenderer } from "@tiptap/react";
+import { Range } from "@tiptap/core";
+
 //TODO I am using cx here to get tailwind autocomplete working, idk if someone else can write a regex to just capture the class key in objects
 const aiHighlight = AIHighlight;
 //You can overwrite the placeholder with your own configuration
@@ -20,7 +27,7 @@ const placeholder = Placeholder;
 const tiptapLink = TiptapLink.configure({
   HTMLAttributes: {
     class: cx(
-      "text-muted-foreground underline underline-offset-[3px] hover:text-primary transition-colors cursor-pointer",
+      "text-muted-foreground underline underline-offset-[3px] hover:text-primary transition-colors cursor-pointer"
     ),
   },
 });
@@ -64,6 +71,35 @@ const horizontalRule = HorizontalRule.configure({
   },
 });
 
+const codeBlock = CodeBlockLowlight.extend({
+  addNodeView() {
+    return ReactNodeViewRenderer(customCodeBlock, {
+      contentDOMElementTag: "code",
+    });
+  },
+  addCommands(): any {
+    return {
+      changeLanguage:
+        (language: string) =>
+        ({ commands }: { commands: any }) => {
+          return commands.updateAttributes("codeBlock", { language });
+        },
+      deleteRange:
+        (range: Range) =>
+        ({ tr }: { tr: any }) => {
+          tr.deleteRange(range.from, range.to);
+          return true;
+        },
+      toggleCodeBlock:
+        () =>
+        ({ commands }: { commands: any }) => {
+          return commands.toggleNode("codeBlock");
+        },
+    };
+  },
+}).configure({
+  lowlight: createLowlight(common),
+});
 const starterKit = StarterKit.configure({
   bulletList: {
     HTMLAttributes: {
@@ -85,13 +121,7 @@ const starterKit = StarterKit.configure({
       class: cx("border-l-4 border-primary"),
     },
   },
-  codeBlock: {
-    HTMLAttributes: {
-      class: cx(
-        "rounded-md bg-muted text-muted-foreground border p-5 font-mono font-medium",
-      ),
-    },
-  },
+  codeBlock: false,
   code: {
     HTMLAttributes: {
       class: cx("rounded-md bg-muted  px-1.5 py-1 font-mono font-medium"),
@@ -116,4 +146,5 @@ export const defaultExtensions = [
   taskItem,
   horizontalRule,
   aiHighlight,
+  codeBlock,
 ];

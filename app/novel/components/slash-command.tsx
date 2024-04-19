@@ -126,10 +126,11 @@ export const suggestionItems = createSuggestionItems([
   {
     title: "Code",
     description: "Capture a code snippet.",
-    searchTerms: ["codeblock"],
+    searchTerms: ["codeBlock"],
     icon: <Code size={18} />,
-    command: ({ editor, range }) =>
-      editor.chain().focus().deleteRange(range).toggleCodeBlock().run(),
+    command: ({ editor, range }) => {
+      editor.chain().focus().deleteRange(range).toggleCodeBlock().run();
+    },
   },
   {
     title: "Image",

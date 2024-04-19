@@ -7,4 +7,13 @@ function isNullOrEmpty(value: any): boolean {
   );
 }
 
-export { isNullOrEmpty };
+const copyToClipboard = async (textToCopy: any) => {
+  try {
+    await navigator.clipboard.writeText(textToCopy);
+    console.log("Text copied to clipboard");
+  } catch (err) {
+    console.error("Failed to copy text: ", err);
+  }
+};
+
+export { isNullOrEmpty, copyToClipboard };
