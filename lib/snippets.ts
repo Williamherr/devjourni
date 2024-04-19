@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 function isNullOrEmpty(value: any): boolean {
   return (
     value === null ||
@@ -10,9 +11,9 @@ function isNullOrEmpty(value: any): boolean {
 const copyToClipboard = async (textToCopy: any) => {
   try {
     await navigator.clipboard.writeText(textToCopy);
-    console.log("Text copied to clipboard");
+    toast("Copy successful!");
   } catch (err) {
-    console.error("Failed to copy text: ", err);
+    toast.error("Copy failed. Error: " + err);
   }
 };
 

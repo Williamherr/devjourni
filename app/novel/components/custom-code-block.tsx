@@ -1,19 +1,9 @@
 import { NodeViewWrapper, NodeViewContent } from "@tiptap/react";
 import { Button } from "@/components/ui/button";
 import { ClipboardCopyIcon } from "lucide-react";
-import { common } from "lowlight";
-
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { EditorInstance } from "novel";
 import { copyToClipboard } from "@/lib/snippets";
+import { CodeBlockComboBox } from "@/components/ui/combobox";
 
 interface CustomCodeBlockProps {
   editor: EditorInstance;
@@ -21,11 +11,14 @@ interface CustomCodeBlockProps {
 }
 
 export const customCodeBlock = ({ node, editor }: CustomCodeBlockProps) => {
+  console.log(node);
+  console.log(editor);
+
   return (
-    <NodeViewWrapper>
+    <NodeViewWrapper className="is-empty">
       <pre className="rounded-md bg-muted text-muted-foreground border p-5 font-mono font-medium">
         <div className="flex justify-between mb-4">
-          <LanguageSelection node={node} editor={editor} />
+          <CodeBlockComboBox node={node} editor={editor} />
           <Button
             variant={"outline"}
             onClick={() => copyToClipboard(node.content.content?.[0].text)}
@@ -39,37 +32,3 @@ export const customCodeBlock = ({ node, editor }: CustomCodeBlockProps) => {
     </NodeViewWrapper>
   );
 };
-
-export function LanguageSelection({
-  node,
-  editor,
-}: {
-  node: any;
-  editor: EditorInstance;
-}) {
-  const handleLanguageChange = (newLanguage: string) => {
-    (
-      editor as EditorInstance & {
-        commands: { changeLanguage: (language: string) => void };
-      }
-    ).commands.changeLanguage(newLanguage);
-  };
-
-  return (
-    <Select onValueChange={handleLanguageChange}>
-      <SelectTrigger className="w-[180px]">
-        <SelectValue placeholder={node.attrs.language ?? "javascript"} />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectGroup>
-          <SelectLabel>Languages</SelectLabel>
-          {Object.keys(common).map((language) => (
-            <SelectItem key={language} value={language}>
-              {language}
-            </SelectItem>
-          ))}
-        </SelectGroup>
-      </SelectContent>
-    </Select>
-  );
-}

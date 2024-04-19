@@ -22,8 +22,21 @@ import { Range } from "@tiptap/core";
 
 //TODO I am using cx here to get tailwind autocomplete working, idk if someone else can write a regex to just capture the class key in objects
 const aiHighlight = AIHighlight;
-//You can overwrite the placeholder with your own configuration
-const placeholder = Placeholder;
+
+const placeholder = Placeholder.configure({
+  placeholder: ({ node }) => {
+    switch (node.type.name) {
+      case "heading":
+        return `Heading ${node.attrs.level}`;
+      case "codeBlock":
+        return "";
+      default:
+        return "Press '/' for commands";
+    }
+  },
+  includeChildren: true,
+});
+
 const tiptapLink = TiptapLink.configure({
   HTMLAttributes: {
     class: cx(
