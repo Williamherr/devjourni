@@ -4,48 +4,58 @@ import GoogleProvider from "next-auth/providers/google";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { db } from "@/lib/schema/schema";
 import { createPages } from "./lib/schema/pages";
-import bcrypt from "bcrypt";
-import { getUser } from "./lib/schema/user";
-import Credentials from "next-auth/providers/credentials";
+import Resend from "next-auth/providers/resend";
+
+async function sendVerificationRequest({
+  identifier: email,
+  url,
+}: {
+  identifier: string;
+  url: string;
+}) {
+  // Call the cloud Email provider API for sending emails
+
+  var nodemailer = require("nodemailer");
+  var transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.NODEMAILER_EMAIL,
+      pass: process.env.NODEMAILER_PW,
+    },
+  });
+
+  var mailOptions = {
+    from: process.env.NODEMAILER_EMAIL,
+    to: email,
+    subject: "Sign in to Your page",
+    text: "Hello, Please use the following link to authenticate your account.", // plain text body
+    html: `<b>Hello,</b><br>Please use the following link to authenticate your account.<br><a href="${url}">Authenticate</a>`, // html body
+  };
+  // send mail with defined transport object
+  transporter.sendMail(mailOptions, (error: Error | null, info: any) => {
+    if (error) {
+      return console.log(error);
+    }
+    console.log("Message sent: %s", info.messageId);
+  });
+}
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  debug: true,
   adapter: DrizzleAdapter(db),
   providers: [
-    Credentials({
-      // You can specify which fields should be submitted, by adding keys to the `credentials` object.
-      // e.g. domain, username, password, 2FA token, etc.
-      credentials: {
-        email: {},
-        password: {},
-      },
-      authorize: async (credentials) => {
-        let user = null;
-
-        // // logic to salt and hash password
-        // const salt = await bcrypt.genSalt(10);
-        // const hashedPassword = await bcrypt.hash(
-        //   credentials.password as string,
-        //   salt
-        // );
-
-        // // logic to verify if user exists
-        // user = await getUser(credentials.email as string, hashedPassword);
-
-        if (!user) {
-          // No user found, so this is their first attempt to login
-          // meaning this is also the place you could do registration
-          throw new Error("User not found.");
-        }
-
-        // return user object with the their profile data
-        return user;
-      },
-    }),
-    GitHub({
-      clientId: process.env.AUTH_GITHUB_ID,
-      clientSecret: process.env.AUTH_GITHUB_SECRET,
-    }),
+    GitHub,
     GoogleProvider,
+
+    {
+      id: "http-email",
+      type: "email",
+      name: "Email",
+      from: process.env.NODEMAILER_EMAIL as string,
+      maxAge: 24 * 60 * 60, // 24 hours
+      options: {}, // Add any additional options here
+      sendVerificationRequest,
+    },
   ],
   events: {
     async createUser({ user }) {
