@@ -14,8 +14,7 @@ async function sendVerificationRequest({
   url: string;
 }) {
   // Call the cloud Email provider API for sending emails
-  console.debug(url);
-  console.debug("Nodemailer ");
+
   var nodemailer = require("nodemailer");
   var transporter = nodemailer.createTransport({
     service: "gmail",
@@ -36,9 +35,9 @@ async function sendVerificationRequest({
   // send mail with defined transport object
   transporter.sendMail(mailOptions, (error: Error | null, info: any) => {
     if (error) {
-      return console.log(error);
+      return console.error(error);
     }
-    console.log("Message sent: %s", info.messageId);
+    console.debug("Message sent: %s", info.messageId);
   });
 }
 
