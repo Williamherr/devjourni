@@ -6,6 +6,13 @@ import { ReactNode } from "react";
 import Providers from "../providers";
 import SideBar from "@/components/layouts/SideBar";
 
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
+import { ScrollArea } from "@/components/ui/scroll-area";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -27,8 +34,15 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body>
         <Providers>
           <div className="flex flex-row h-screen">
-            <SideBar />
-            {children}
+            <ResizablePanelGroup direction="horizontal">
+              <ResizablePanel defaultSize={25}>
+                <SideBar />
+              </ResizablePanel>
+              <ResizableHandle withHandle />
+              <ResizablePanel defaultSize={75} className="!overflow-y-scroll">
+                {children}
+              </ResizablePanel>
+            </ResizablePanelGroup>
           </div>
         </Providers>
       </body>
