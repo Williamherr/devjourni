@@ -14,8 +14,9 @@ async function sendVerificationRequest({
   url: string;
 }) {
   // Call the cloud Email provider API for sending emails
-
+  console.debug("create nodemailerl");
   var nodemailer = require("nodemailer");
+  console.debug("createTransport");
   var transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -23,7 +24,7 @@ async function sendVerificationRequest({
       pass: process.env.NODEMAILER_PW,
     },
   });
-
+  console.debug("mailoptions sending email");
   var mailOptions = {
     from: process.env.NODEMAILER_EMAIL,
     to: email,
@@ -31,9 +32,10 @@ async function sendVerificationRequest({
     text: `Hello, Please use the following link to authenticate your account: ${url}`, // plain text body
     html: `<b>Hello,</b><br>Please use the following link to authenticate your account:<br><a href="${url}">${url}</a>`, // html body
   };
-
+  console.debug("before sending email");
   // send mail with defined transport object
   transporter.sendMail(mailOptions, (error: Error | null, info: any) => {
+    console.debug("sending email");
     if (error) {
       return console.error(error);
     }
