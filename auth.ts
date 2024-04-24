@@ -4,48 +4,84 @@ import GoogleProvider from "next-auth/providers/google";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { db } from "@/lib/schema/schema";
 import { createPages } from "./lib/schema/pages";
-import bcrypt from "bcrypt";
-import { getUser } from "./lib/schema/user";
-import Credentials from "next-auth/providers/credentials";
+
+async function sendVerificationRequest({
+  identifier: email,
+  url,
+}: {
+  identifier: string;
+  url: string;
+}) {
+  var nodemailer = require("nodemailer");
+  var transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.NODEMAILER_EMAIL,
+      pass: process.env.NODEMAILER_PW,
+    },
+  });
+
+  await new Promise((resolve, reject) => {
+    // verify connection configuration
+    transporter.verify(function (error: any, success: any) {
+      if (error) {
+        console.log(error);
+        reject(error);
+      } else {
+        console.log("Server is ready to take our messages");
+        resolve(success);
+      }
+    });
+  });
+
+  var mailOptions = {
+    from: process.env.NODEMAILER_EMAIL,
+    to: email,
+    subject: "Sign in to Your page",
+    text: `Hello, Please use the following link to authenticate your account: ${url}`, // plain text body
+    html: `<b>Hello,</b><br>Please use the following link to authenticate your account:<br><a href="${url}">Authenticate</a>`, // html body
+  };
+  // send mail with defined transport object
+  await new Promise((resolve, reject) => {
+    // send mail
+    transporter.sendMail(mailOptions, (err: any, info: any) => {
+      if (err) {
+        console.error(err);
+        reject(err);
+      } else {
+        console.log(info);
+        resolve(info);
+      }
+    });
+  });
+}
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  logger: {
+    error(code, ...message) {
+      console.error(code, message);
+    },
+    warn(code, ...message) {
+      console.warn(code, message);
+    },
+    debug(code, ...message) {
+      console.debug(code, message);
+    },
+  },
   adapter: DrizzleAdapter(db),
   providers: [
-    Credentials({
-      // You can specify which fields should be submitted, by adding keys to the `credentials` object.
-      // e.g. domain, username, password, 2FA token, etc.
-      credentials: {
-        email: {},
-        password: {},
-      },
-      authorize: async (credentials) => {
-        let user = null;
-
-        // // logic to salt and hash password
-        // const salt = await bcrypt.genSalt(10);
-        // const hashedPassword = await bcrypt.hash(
-        //   credentials.password as string,
-        //   salt
-        // );
-
-        // // logic to verify if user exists
-        // user = await getUser(credentials.email as string, hashedPassword);
-
-        if (!user) {
-          // No user found, so this is their first attempt to login
-          // meaning this is also the place you could do registration
-          throw new Error("User not found.");
-        }
-
-        // return user object with the their profile data
-        return user;
-      },
-    }),
-    GitHub({
-      clientId: process.env.AUTH_GITHUB_ID,
-      clientSecret: process.env.AUTH_GITHUB_SECRET,
-    }),
+    GitHub,
     GoogleProvider,
+
+    {
+      id: "http-email",
+      type: "email",
+      name: "Email",
+      from: process.env.NODEMAILER_EMAIL as string,
+      maxAge: 24 * 60 * 60, // 24 hours
+      options: {}, // Add any additional options here
+      sendVerificationRequest,
+    },
   ],
   events: {
     async createUser({ user }) {
