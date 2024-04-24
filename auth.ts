@@ -17,6 +17,9 @@ async function sendVerificationRequest({
   console.debug("create nodemailerl");
   var nodemailer = require("nodemailer");
   console.debug("createTransport");
+  console.debug("email: ", process.env.NODEMAILER_EMAIL);
+  console.debug("password: ", process.env.NODEMAILER_PW);
+
   var transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
