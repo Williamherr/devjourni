@@ -14,7 +14,8 @@ async function sendVerificationRequest({
   url: string;
 }) {
   // Call the cloud Email provider API for sending emails
-
+  console.debug(url);
+  console.debug("Nodemailer ");
   var nodemailer = require("nodemailer");
   var transporter = nodemailer.createTransport({
     service: "gmail",
@@ -28,9 +29,10 @@ async function sendVerificationRequest({
     from: process.env.NODEMAILER_EMAIL,
     to: email,
     subject: "Sign in to Your page",
-    text: "Hello, Please use the following link to authenticate your account.", // plain text body
-    html: `<b>Hello,</b><br>Please use the following link to authenticate your account.<br><a href="${url}">Authenticate</a>`, // html body
+    text: `Hello, Please use the following link to authenticate your account: ${url}`, // plain text body
+    html: `<b>Hello,</b><br>Please use the following link to authenticate your account:<br><a href="${url}">${url}</a>`, // html body
   };
+
   // send mail with defined transport object
   transporter.sendMail(mailOptions, (error: Error | null, info: any) => {
     if (error) {
@@ -41,7 +43,17 @@ async function sendVerificationRequest({
 }
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  debug: true,
+  logger: {
+    error(code, ...message) {
+      console.error(code, message);
+    },
+    warn(code, ...message) {
+      console.warn(code, message);
+    },
+    debug(code, ...message) {
+      console.debug(code, message);
+    },
+  },
   adapter: DrizzleAdapter(db),
   providers: [
     GitHub,
