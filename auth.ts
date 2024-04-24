@@ -27,6 +27,20 @@ async function sendVerificationRequest({
       pass: process.env.NODEMAILER_PW,
     },
   });
+
+  await new Promise((resolve, reject) => {
+    // verify connection configuration
+    transporter.verify(function (error: any, success: any) {
+      if (error) {
+        console.log(error);
+        reject(error);
+      } else {
+        console.log("Server is ready to take our messages");
+        resolve(success);
+      }
+    });
+  });
+
   console.debug("mailoptions sending email");
   var mailOptions = {
     from: process.env.NODEMAILER_EMAIL,
@@ -37,12 +51,17 @@ async function sendVerificationRequest({
   };
   console.debug("before sending email");
   // send mail with defined transport object
-  transporter.sendMail(mailOptions, (error: Error | null, info: any) => {
-    console.debug("sending email");
-    if (error) {
-      return console.error(error);
-    }
-    console.debug("Message sent: %s", info.messageId);
+  await new Promise((resolve, reject) => {
+    // send mail
+    transporter.sendMail(mailOptions, (err: any, info: any) => {
+      if (err) {
+        console.error(err);
+        reject(err);
+      } else {
+        console.log(info);
+        resolve(info);
+      }
+    });
   });
 }
 
