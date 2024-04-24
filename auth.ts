@@ -4,7 +4,6 @@ import GoogleProvider from "next-auth/providers/google";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { db } from "@/lib/schema/schema";
 import { createPages } from "./lib/schema/pages";
-import Resend from "next-auth/providers/resend";
 
 async function sendVerificationRequest({
   identifier: email,
@@ -13,13 +12,7 @@ async function sendVerificationRequest({
   identifier: string;
   url: string;
 }) {
-  // Call the cloud Email provider API for sending emails
-  console.debug("create nodemailerl");
   var nodemailer = require("nodemailer");
-  console.debug("createTransport");
-  console.debug("email: ", process.env.NODEMAILER_EMAIL);
-  console.debug("password: ", process.env.NODEMAILER_PW);
-
   var transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -41,15 +34,13 @@ async function sendVerificationRequest({
     });
   });
 
-  console.debug("mailoptions sending email");
   var mailOptions = {
     from: process.env.NODEMAILER_EMAIL,
     to: email,
     subject: "Sign in to Your page",
     text: `Hello, Please use the following link to authenticate your account: ${url}`, // plain text body
-    html: `<b>Hello,</b><br>Please use the following link to authenticate your account:<br><a href="${url}">${url}</a>`, // html body
+    html: `<b>Hello,</b><br>Please use the following link to authenticate your account:<br><a href="${url}">Authenticate</a>`, // html body
   };
-  console.debug("before sending email");
   // send mail with defined transport object
   await new Promise((resolve, reject) => {
     // send mail
