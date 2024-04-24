@@ -83,6 +83,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       sendVerificationRequest,
     },
   ],
+  trustHost: true,
   events: {
     async createUser({ user }) {
       createPages(user.id ?? "", null, null);
