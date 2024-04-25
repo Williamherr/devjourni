@@ -107,3 +107,7 @@
     @apply bg-background text-foreground;
   }
 }
+
+.sideBarScroll div {
+  display: block !important;
+}

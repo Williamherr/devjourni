@@ -4,7 +4,7 @@ import "@/styles/globals.css";
 import "@/styles/prosemirror.css";
 import { ReactNode } from "react";
 import Providers from "../providers";
-import SideBar from "@/components/layouts/SideBar";
+import ResizableLayout from "@/components/layouts/ResizableLayout";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,8 +27,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body>
         <Providers>
           <div className="flex flex-row h-screen">
-            <SideBar />
-            {children}
+            <ResizableLayout>{children}</ResizableLayout>
           </div>
         </Providers>
       </body>
