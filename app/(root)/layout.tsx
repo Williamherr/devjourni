@@ -4,14 +4,7 @@ import "@/styles/globals.css";
 import "@/styles/prosemirror.css";
 import { ReactNode } from "react";
 import Providers from "../providers";
-import SideBar from "@/components/layouts/SideBar";
-
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import ResizableLayout from "@/components/layouts/ResizableLayout";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -34,15 +27,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body>
         <Providers>
           <div className="flex flex-row h-screen">
-            <ResizablePanelGroup direction="horizontal">
-              <ResizablePanel defaultSize={25}>
-                <SideBar />
-              </ResizablePanel>
-              <ResizableHandle withHandle />
-              <ResizablePanel defaultSize={75} className="!overflow-y-scroll">
-                {children}
-              </ResizablePanel>
-            </ResizablePanelGroup>
+            <ResizableLayout>{children}</ResizableLayout>
           </div>
         </Providers>
       </body>

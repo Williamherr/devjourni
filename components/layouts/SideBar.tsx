@@ -21,21 +21,20 @@ const SideBar = () => {
       key={key}
       className={`${buttonVariants({
         variant: "ghost",
-      })} !justify-between gap-4 !flex`}
+      })} !justify-between gap-4 !flex group w-full`}
     >
-      <span className="hover:bg-slate-700 rounded-sm p-1 w-full">
-        <Link href={id.toString()} className="flex justify-start items-center">
-          {Icon !== undefined && Icon !== null ? (
-            <Icon className="mr-2 h-4 w-4" />
-          ) : (
-            <ReaderIcon className="mr-2 h-4 w-4" />
-          )}
-          {name}
-        </Link>
-      </span>
-      <span className="hover:bg-slate-700 rounded-sm p-1 ">
-        <PageMenu id={id} />
-      </span>
+      <Link href={id.toString()} className="flex items-center w-full">
+        {Icon !== undefined && Icon !== null ? (
+          <Icon className="mr-2 h-4 w-4" />
+        ) : (
+          <ReaderIcon className="mr-2 h-4 w-4" />
+        )}
+        <span className="text-ellipsis overflow-hidden flex-1">{name}</span>
+
+        <span className="ml-auto group-hover:visible group-hover:block group-hover:w-fit invisible w-0 hover:bg-slate-700 rounded-sm p-1 ">
+          <PageMenu id={id} />
+        </span>
+      </Link>
     </div>
   );
 
@@ -62,8 +61,7 @@ const SideBar = () => {
           {links.map((link: string, index: number) =>
             sideBarButton(link, index)
           )}
-
-          <ScrollArea className="my-4 border-t-2 flex-1">
+          <ScrollArea className="sideBarScroll my-4 border-t-2 w-full">
             {data.pages?.map((route: Pages, index: number) =>
               sideBarButtonPages({ ...route }, index)
             )}
