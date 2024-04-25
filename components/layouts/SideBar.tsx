@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 
-import { buttonVariants } from "../ui/button";
+import { Button, buttonVariants } from "../ui/button";
 import { leftSideBarLinks as links } from "@/constants/link";
 import { Pages } from "@/types/custom";
-import { ReaderIcon } from "@radix-ui/react-icons";
+import { GearIcon, ReaderIcon } from "@radix-ui/react-icons";
 
 import useSWR from "swr";
 import { fetcher } from "@/lib/utils";
@@ -14,6 +14,7 @@ import { CreatePages, Settings } from "../SideBtnModal";
 import { PageMenu } from "../PageMenu";
 import { LoadingSpinner } from "../ui/loading-spinner";
 import EmptyState from "../empty-state";
+import { signOut } from "next-auth/react";
 
 const SideBar = () => {
   const sideBarButtonPages = ({ name, icon: Icon, id }: Pages, key: number) => (
@@ -37,13 +38,25 @@ const SideBar = () => {
       </Link>
     </div>
   );
-
+  async function logout() {
+    await signOut();
+  }
   const sideBarButton = (pageName: string, key: number): JSX.Element => {
     switch (pageName) {
       case "New page":
         return <CreatePages key={key} />;
       case "Settings":
         return <Settings key={key} />;
+      case "Logout":
+        return (
+          <Button
+            variant={"ghost"}
+            onClick={logout}
+            className="w-full flex justify-start"
+          >
+            <GearIcon className="mr-2 h-4 w-4" /> Logout
+          </Button>
+        );
       default:
         return <></>;
     }

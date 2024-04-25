@@ -17,11 +17,4 @@ export const navBarLinks = [
   },
 ];
 
-// export const leftSideBarLinks = {
-//   top: [
-//     { name: "New page", icon: Pencil2Icon, path: "/" },
-//     { name: "Settings", icon: GearIcon, path: "/" },
-//   ] as SideButton[],
-// };
-
-export const leftSideBarLinks = ["New page", "Settings"];
+export const leftSideBarLinks = ["New page", "Settings", "Logout"];
