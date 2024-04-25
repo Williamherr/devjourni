@@ -70,20 +70,18 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   },
   adapter: DrizzleAdapter(db),
   providers: [
-    GitHub,
-    GoogleProvider,
-
     {
       id: "http-email",
       type: "email",
       name: "Email",
       from: process.env.NODEMAILER_EMAIL as string,
       maxAge: 24 * 60 * 60, // 24 hours
-      options: {}, // Add any additional options here
+      options: {},
       sendVerificationRequest,
     },
+    GitHub,
+    GoogleProvider,
   ],
-  trustHost: true,
   events: {
     async createUser({ user }) {
       createPages(user.id ?? "", null, null);
