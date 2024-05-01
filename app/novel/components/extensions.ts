@@ -19,6 +19,7 @@ import "highlight.js/styles/github-dark-dimmed.css";
 import { customCodeBlock } from "./custom-code-block";
 import { ReactNodeViewRenderer } from "@tiptap/react";
 import { Range } from "@tiptap/core";
+import { ImageBlock } from "./ImageBlock";
 
 //TODO I am using cx here to get tailwind autocomplete working, idk if someone else can write a regex to just capture the class key in objects
 const aiHighlight = AIHighlight;
@@ -45,7 +46,7 @@ const tiptapLink = TiptapLink.configure({
   },
 });
 
-const tiptapImage = TiptapImage.extend({
+const tiptapImage = ImageBlock.extend({
   addProseMirrorPlugins() {
     return [
       UploadImagesPlugin({
@@ -85,6 +86,7 @@ const horizontalRule = HorizontalRule.configure({
 });
 
 const codeBlock = CodeBlockLowlight.extend({
+  group: "block",
   addNodeView() {
     return ReactNodeViewRenderer(customCodeBlock, {
       contentDOMElementTag: "code",

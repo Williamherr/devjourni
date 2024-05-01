@@ -11,13 +11,10 @@ interface CustomCodeBlockProps {
 }
 
 export const customCodeBlock = ({ node, editor }: CustomCodeBlockProps) => {
-  console.log(node);
-  console.log(editor);
-
   return (
     <NodeViewWrapper className="is-empty">
       <pre className="rounded-md bg-muted text-muted-foreground border p-5 font-mono font-medium">
-        <div className="flex justify-between mb-4">
+        <div contentEditable={false} className="flex justify-between mb-4">
           <CodeBlockComboBox node={node} editor={editor} />
           <Button
             variant={"outline"}
