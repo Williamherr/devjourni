@@ -41,9 +41,9 @@ async function sendVerificationRequest({
     text: `Hello, Please use the following link to authenticate your account: ${url}`, // plain text body
     html: `<b>Hello,</b><br>Please use the following link to authenticate your account:<br><a href="${url}">Authenticate</a>`, // html body
   };
+
   // send mail with defined transport object
   await new Promise((resolve, reject) => {
-    // send mail
     transporter.sendMail(mailOptions, (err: any, info: any) => {
       if (err) {
         console.error(err);
