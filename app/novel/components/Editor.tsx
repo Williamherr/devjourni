@@ -14,7 +14,7 @@ import {
 } from "novel";
 import { handleCommandNavigation } from "novel/extensions";
 import { handleImageDrop, handleImagePaste } from "novel/plugins";
-import { defaultExtensions } from "./extensions";
+import { defaultExtensions } from "./extensions/extensions";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
@@ -25,10 +25,9 @@ import { ColorSelector } from "./selectors/color-selector";
 import { TextButtons } from "./selectors/text-buttons";
 
 import GenerativeMenuSwitch from "./generative/generative-menu-switch";
-import { slashCommand, suggestionItems } from "./slash-command";
+import { slashCommand, suggestionItems } from "./extensions/slash-command";
 
-import { uploadFn } from "./image-upload";
-import { ImageResizer } from "./image-resizer";
+import { uploadFn } from "./extensions/image-upload";
 
 const extensions = [...defaultExtensions, slashCommand];
 

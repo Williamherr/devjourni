@@ -1,8 +1,13 @@
-import { ReactNodeViewRenderer } from "@tiptap/react";
+import { ReactNodeViewRenderer, NodeViewContent } from "@tiptap/react";
 import { mergeAttributes, Range } from "@tiptap/core";
 import { Image } from "@tiptap/extension-image";
 import { Slider } from "@/components/ui/slider";
-import { AlignLeftIcon, AlignCenterIcon, AlignRightIcon } from "lucide-react";
+import {
+  AlignLeftIcon,
+  AlignCenterIcon,
+  AlignRightIcon,
+  Captions,
+} from "lucide-react";
 
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
@@ -20,12 +25,7 @@ declare module "@tiptap/core" {
 
 export const ImageBlock = Image.extend({
   name: "image",
-
-  group: "block",
-
-  defining: true,
-
-  isolating: true,
+  draggable: true,
 
   addAttributes() {
     return {
@@ -73,7 +73,7 @@ export const ImageBlock = Image.extend({
         (attrs) =>
         ({ commands }) => {
           return commands.insertContent({
-            type: "imageBlock",
+            type: "image",
             attrs: { src: attrs.src },
           });
         },
@@ -82,7 +82,7 @@ export const ImageBlock = Image.extend({
         (attrs) =>
         ({ commands }) => {
           return commands.insertContentAt(attrs.pos, {
-            type: "imageBlock",
+            type: "image",
             attrs: { src: attrs.src },
           });
         },
@@ -111,7 +111,7 @@ export const ImageBlock = Image.extend({
 import { cn } from "@/lib/utils";
 import { Node } from "@tiptap/pm/model";
 import { Editor, NodeViewWrapper } from "@tiptap/react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { EventHandler, useCallback, useEffect, useRef, useState } from "react";
 
 import {
   Popover,
@@ -119,6 +119,9 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@radix-ui/react-dropdown-menu";
+import { useDebounce, useDebouncedCallback } from "use-debounce";
 
 interface ImageBlockViewProps {
   editor: Editor;
@@ -132,10 +135,13 @@ interface ImageBlockViewProps {
 }
 
 export const ImageBlockView = (props: ImageBlockViewProps) => {
-  const { editor, getPos, node } = props;
-  const imageWrapperRef = useRef<HTMLDivElement>(null);
-  const { src } = node.attrs;
-  const [width, setWidth] = useState(parseInt(node.attrs.width));
+  const { editor, node } = props;
+  const { src, alt } = node.attrs;
+  const parseWidth = parseInt(node.attrs.width);
+  const [width, setWidth] = useState(
+    !Number.isNaN(parseWidth) ? parseWidth : 100
+  );
+  const [openCaption, setOpenCaption] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
@@ -145,68 +151,94 @@ export const ImageBlockView = (props: ImageBlockViewProps) => {
     });
   }, [width]);
 
-  const wrapperClassName = cn(
-    node.attrs.align === "left" ? "float-left" : "",
-    node.attrs.align === "right" ? "float-right" : "",
-    node.attrs.align === "center" && "mx-auto"
-  );
+  const wrapperClassName = () => {
+    switch (node.attrs.align) {
+      case "left":
+        return "justify-start";
+      case "right":
+        return "justify-end";
+      default:
+        return "justify-center";
+    }
+  };
 
   const onClickHandler = (align: "left" | "center" | "right") => {
-    console.log(align);
     editor.commands.setImageBlockAlign(align);
   };
 
-  const onClick = useCallback(() => {
-    console.log(node.attrs.width);
-
-    console.log(node.attrs.width.replace("%", ""));
-  }, [getPos, editor.commands]);
-
   const handleResize = (value: number[]) => {
     setWidth((prevWidth) => value[0]);
-
-    //  editor.commands.setImageBlockWidth(width);
   };
+
+  const handleAltChange = (alt: string) => {
+    editor.commands.updateAttributes("image", { alt });
+  };
+
+  const handlePopoverChange = (isOpen: boolean) => {
+    if (!isOpen) {
+      setTimeout(() => {
+        setOpenCaption(false);
+      }, 300);
+    }
+  };
+
+  const debounced = useDebouncedCallback(
+    (value) => {
+      handleAltChange(value);
+    },
+    1000,
+    // The maximum time func is allowed to be delayed before it's invoked:
+    { maxWait: 2000 }
+  );
 
   return (
     <NodeViewWrapper>
-      <Popover>
-        <PopoverTrigger>
-          <div style={{ width: node.attrs.width }}>
-            <div
-              className={wrapperClassName}
-              contentEditable={false}
-              ref={imageWrapperRef}
-            >
-              <img className="block" src={src} alt="" onClick={onClick} />
-            </div>
+      <div>
+        <Popover onOpenChange={handlePopoverChange}>
+          <div className={`flex ${wrapperClassName()}`}>
+            <PopoverTrigger style={{ width: node.attrs.width }}>
+              <img className="m-0 w-full" src={src} alt={alt} />
+              <div>{alt}</div>
+            </PopoverTrigger>
           </div>
-        </PopoverTrigger>
-        <PopoverContent className="w-full">
-          <div className="space-y-2">
-            <div className="space-x-1">
-              <Button value="left" onClick={() => onClickHandler("left")}>
-                <AlignLeftIcon />
-              </Button>
-              <Button onClick={() => onClickHandler("center")}>
-                <AlignCenterIcon />
-              </Button>
-              <Button value="right" onClick={() => onClickHandler("right")}>
-                <AlignRightIcon />
-              </Button>
-            </div>
-            <div className="flex space-x-5">
-              <Slider
-                defaultValue={[width]}
-                max={100}
-                step={5}
-                onValueChange={handleResize}
-              />
-              <p>{width}</p>
-            </div>
-          </div>
-        </PopoverContent>
-      </Popover>
+
+          <PopoverContent className="w-full">
+            {openCaption ? (
+              <div className="space-y-2">
+                <Label>Caption</Label>
+                <Input onChange={(e) => debounced(e.target.value)} />
+              </div>
+            ) : (
+              <div className="space-y-2">
+                <div className="space-x-1">
+                  <Button onClick={() => setOpenCaption(true)}>
+                    <Captions />
+                  </Button>
+                  <Button onClick={() => onClickHandler("left")}>
+                    <AlignLeftIcon />
+                  </Button>
+                  <Button onClick={() => onClickHandler("center")}>
+                    <AlignCenterIcon />
+                  </Button>
+                  <Button onClick={() => onClickHandler("right")}>
+                    <AlignRightIcon />
+                  </Button>
+                </div>
+                <div className="flex space-x-5">
+                  <Slider
+                    defaultValue={[width]}
+                    max={100}
+                    min={5}
+                    step={5}
+                    onValueChange={handleResize}
+                  />
+                  <p>{width}</p>
+                </div>
+              </div>
+            )}
+          </PopoverContent>
+        </Popover>
+      </div>
     </NodeViewWrapper>
   );
 };

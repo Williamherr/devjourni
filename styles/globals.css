@@ -111,3 +111,7 @@
 .sideBarScroll div {
   display: block !important;
 }
+
+.fullList div {
+  width: 100% !important;
+}
