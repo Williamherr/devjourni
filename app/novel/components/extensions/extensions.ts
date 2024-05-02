@@ -1,5 +1,4 @@
 import {
-  TiptapImage,
   TiptapLink,
   UpdatedImage,
   TaskList,
@@ -9,17 +8,10 @@ import {
   Placeholder,
   AIHighlight,
 } from "novel/extensions";
-import { UploadImagesPlugin } from "novel/plugins";
 
 import { cx } from "class-variance-authority";
 
-import { CodeBlockLowlight } from "@tiptap/extension-code-block-lowlight";
-import { common, createLowlight } from "lowlight";
-import "highlight.js/styles/github-dark-dimmed.css";
-import { customCodeBlock } from "./custom-code-block";
-import { ReactNodeViewRenderer } from "@tiptap/react";
-import { Range } from "@tiptap/core";
-import { ImageBlock } from "./ImageBlock";
+import customExtensions from "./customExtensions";
 
 //TODO I am using cx here to get tailwind autocomplete working, idk if someone else can write a regex to just capture the class key in objects
 const aiHighlight = AIHighlight;
@@ -43,21 +35,6 @@ const tiptapLink = TiptapLink.configure({
     class: cx(
       "text-muted-foreground underline underline-offset-[3px] hover:text-primary transition-colors cursor-pointer"
     ),
-  },
-});
-
-const tiptapImage = ImageBlock.extend({
-  addProseMirrorPlugins() {
-    return [
-      UploadImagesPlugin({
-        imageClass: cx("opacity-40 rounded-lg border border-stone-200"),
-      }),
-    ];
-  },
-}).configure({
-  allowBase64: true,
-  HTMLAttributes: {
-    class: cx("rounded-lg border border-muted"),
   },
 });
 
@@ -85,36 +62,6 @@ const horizontalRule = HorizontalRule.configure({
   },
 });
 
-const codeBlock = CodeBlockLowlight.extend({
-  group: "block",
-  addNodeView() {
-    return ReactNodeViewRenderer(customCodeBlock, {
-      contentDOMElementTag: "code",
-    });
-  },
-  addCommands(): any {
-    return {
-      changeLanguage:
-        (language: string) =>
-        ({ commands }: { commands: any }) => {
-          return commands.updateAttributes("codeBlock", { language });
-        },
-      deleteRange:
-        (range: Range) =>
-        ({ tr }: { tr: any }) => {
-          tr.deleteRange(range.from, range.to);
-          return true;
-        },
-      toggleCodeBlock:
-        () =>
-        ({ commands }: { commands: any }) => {
-          return commands.toggleNode("codeBlock");
-        },
-    };
-  },
-}).configure({
-  lowlight: createLowlight(common),
-});
 const starterKit = StarterKit.configure({
   bulletList: {
     HTMLAttributes: {
@@ -155,11 +102,10 @@ export const defaultExtensions = [
   starterKit,
   placeholder,
   tiptapLink,
-  tiptapImage,
   updatedImage,
   taskList,
   taskItem,
   horizontalRule,
   aiHighlight,
-  codeBlock,
+  ...customExtensions,
 ];

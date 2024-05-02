@@ -1,117 +1,7 @@
-import { ReactNodeViewRenderer, NodeViewContent } from "@tiptap/react";
-import { mergeAttributes, Range } from "@tiptap/core";
-import { Image } from "@tiptap/extension-image";
-import { Slider } from "@/components/ui/slider";
-import {
-  AlignLeftIcon,
-  AlignCenterIcon,
-  AlignRightIcon,
-  Captions,
-} from "lucide-react";
+import { useEffect, useState } from "react";
 
-declare module "@tiptap/core" {
-  interface Commands<ReturnType> {
-    imageBlock: {
-      setImageBlock: (attributes: { src: string }) => ReturnType;
-      setImageBlockAt: (attributes: {
-        src: string;
-        pos: number | Range;
-      }) => ReturnType;
-      setImageBlockAlign: (align: "left" | "center" | "right") => ReturnType;
-      setImageBlockWidth: (width: number) => ReturnType;
-    };
-  }
-}
-
-export const ImageBlock = Image.extend({
-  name: "image",
-  draggable: true,
-
-  addAttributes() {
-    return {
-      src: {
-        default: "",
-        parseHTML: (element) => element.getAttribute("src"),
-        renderHTML: (attributes) => ({
-          src: attributes.src,
-        }),
-      },
-      width: {
-        default: "100%",
-        parseHTML: (element) => element.getAttribute("data-width"),
-        renderHTML: (attributes) => ({
-          "data-width": attributes.width,
-        }),
-      },
-      align: {
-        default: "center",
-        parseHTML: (element) => element.getAttribute("data-align"),
-        renderHTML: (attributes) => ({
-          "data-align": attributes.align,
-        }),
-      },
-      alt: {
-        default: undefined,
-        parseHTML: (element) => element.getAttribute("alt"),
-        renderHTML: (attributes) => ({
-          alt: attributes.alt,
-        }),
-      },
-    };
-  },
-
-  renderHTML({ HTMLAttributes }) {
-    return [
-      "img",
-      mergeAttributes(this.options.HTMLAttributes, HTMLAttributes),
-    ];
-  },
-
-  addCommands() {
-    return {
-      setImageBlock:
-        (attrs) =>
-        ({ commands }) => {
-          return commands.insertContent({
-            type: "image",
-            attrs: { src: attrs.src },
-          });
-        },
-
-      setImageBlockAt:
-        (attrs) =>
-        ({ commands }) => {
-          return commands.insertContentAt(attrs.pos, {
-            type: "image",
-            attrs: { src: attrs.src },
-          });
-        },
-
-      setImageBlockAlign:
-        (align) =>
-        ({ commands }) =>
-          commands.updateAttributes("image", { align }),
-
-      setImageBlockWidth:
-        (width) =>
-        ({ commands }) => {
-          console.log(width);
-          commands.updateAttributes("image", {
-            width: `${Math.max(0, Math.min(100, width))}%`,
-          });
-        },
-    };
-  },
-
-  addNodeView() {
-    return ReactNodeViewRenderer(ImageBlockView);
-  },
-});
-
-import { cn } from "@/lib/utils";
-import { Node } from "@tiptap/pm/model";
 import { Editor, NodeViewWrapper } from "@tiptap/react";
-import { EventHandler, useCallback, useEffect, useRef, useState } from "react";
+import { Node } from "@tiptap/pm/model";
 
 import {
   Popover,
@@ -120,12 +10,20 @@ import {
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@radix-ui/react-dropdown-menu";
-import { useDebounce, useDebouncedCallback } from "use-debounce";
+import { Label } from "@/components/ui/label";
+import { Slider } from "@/components/ui/slider";
+import {
+  AlignLeftIcon,
+  AlignCenterIcon,
+  AlignRightIcon,
+  Captions,
+} from "lucide-react";
+
+import { useDebouncedCallback } from "use-debounce";
 
 interface ImageBlockViewProps {
   editor: Editor;
-  getPos: () => number;
+  //   getPos: () => number;
   node: Node & {
     attrs: {
       src: string;
@@ -242,5 +140,3 @@ export const ImageBlockView = (props: ImageBlockViewProps) => {
     </NodeViewWrapper>
   );
 };
-
-export default ImageBlock;
