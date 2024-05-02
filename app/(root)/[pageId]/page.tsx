@@ -1,6 +1,6 @@
 "use client";
 
-import TextEditor from "@/app/novel/components/Editor";
+import TextEditor from "@/components/novel/Editor";
 import useSWR from "swr";
 import { fetcher } from "@/lib/utils";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";

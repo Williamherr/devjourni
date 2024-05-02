@@ -5,7 +5,7 @@ import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import { Button } from "./ui/button";
 import { GearIcon, Pencil2Icon } from "@radix-ui/react-icons";
 import { Input } from "./ui/input";
-import TextEditor from "@/app/novel/components/Editor";
+import TextEditor from "@/components/novel/Editor";
 import { useRouter } from "next/navigation";
 import { mutate } from "swr";
 

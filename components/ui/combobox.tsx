@@ -18,8 +18,8 @@ import {
 } from "@/components/ui/popover";
 import { ScrollArea } from "./scroll-area";
 import { useState } from "react";
-import { EditorInstance } from "novel";
-import { languages } from "@/app/novel/components/extensions/customExtensions/codeBlock/langauges";
+
+import { languages } from "../novel/extensions/customExtensions/codeBlock/langauges";
 
 export function CodeBlockComboBox({
   node,
