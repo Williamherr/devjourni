@@ -111,7 +111,7 @@ export const ImageBlock = Image.extend({
 import { cn } from "@/lib/utils";
 import { Node } from "@tiptap/pm/model";
 import { Editor, NodeViewWrapper } from "@tiptap/react";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import {
   Popover,
@@ -137,9 +137,17 @@ export const ImageBlockView = (props: ImageBlockViewProps) => {
   const { src } = node.attrs;
   const [width, setWidth] = useState(parseInt(node.attrs.width));
 
+  useEffect(() => {
+    setTimeout(() => {
+      if (width !== null) {
+        editor.commands.setImageBlockWidth(width);
+      }
+    });
+  }, [width]);
+
   const wrapperClassName = cn(
-    node.attrs.align === "left" ? "ml-0" : "ml-auto",
-    node.attrs.align === "right" ? "mr-0" : "mr-auto",
+    node.attrs.align === "left" ? "float-left" : "",
+    node.attrs.align === "right" ? "float-right" : "",
     node.attrs.align === "center" && "mx-auto"
   );
 
@@ -155,16 +163,21 @@ export const ImageBlockView = (props: ImageBlockViewProps) => {
   }, [getPos, editor.commands]);
 
   const handleResize = (value: number[]) => {
-    setWidth(value[0]);
-    editor.commands.setImageBlockWidth(width);
+    setWidth((prevWidth) => value[0]);
+
+    //  editor.commands.setImageBlockWidth(width);
   };
 
   return (
     <NodeViewWrapper>
       <Popover>
         <PopoverTrigger>
-          <div className={wrapperClassName} style={{ width: node.attrs.width }}>
-            <div contentEditable={false} ref={imageWrapperRef}>
+          <div style={{ width: node.attrs.width }}>
+            <div
+              className={wrapperClassName}
+              contentEditable={false}
+              ref={imageWrapperRef}
+            >
               <img className="block" src={src} alt="" onClick={onClick} />
             </div>
           </div>
