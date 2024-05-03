@@ -11,9 +11,9 @@ DevJourni is a web application for developer to journal their journey as a devel
 
 ## Tech Stack
 
-**Full Stack:** Nextjs
+**Full Stack:** Next.js
 
-**Auth:** Next Auth
+**Auth:** Auth.js
 
 **DB & Hosting:** Postgres SQL, Vercel
 
