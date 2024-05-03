@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+## 🚀 About Me
 
-First, run the development server:
+Hey everyone, my name is William Herr, and I am a full stack software engineer. I built this note taking application to write about my thoughts and jouney as a software engineer. I personally use this web application to write code snippets, new technology or tools that I have learned, day to day side project process, and more. 
+
+
+# DevJourni
+
+DevJourni is a web application for developer to journal their journey as a developer. It serves as a digital notebook where developers can jot down their thoughts, ideas, and insights as they navigate through the intricate world of coding. Whether it’s a quick reminder, a complex algorithm, or a code snippet, DevJourni provides a structured and intuitive platform for all your note-taking needs. With its user-friendly interface and robust features, DevJourni aims to enhance productivity, promote organized thinking, and transform the way developers capture and revisit their coding journey.
+
+
+## Tech Stack
+
+**Full Stack:** Next.js
+
+**Auth:** Auth.js
+
+**DB & Hosting:** Postgres SQL, Vercel
+
+**Ui:** Tailwind CSS, Shadcn-UI
+
+**LLM:** ChatGPT 
+
+**Editor:** Nove.sh and Tiptap 
+
+## Installation
+
+Clone this repo
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+  npm install
+  npm run dev
 ```
+    
+## Environment Variables
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+To run this project, you will need to add the following environment variables to your .env file
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+ OPTIONAL: Vercel Blob (for uploading images)
+ Get your Vercel Blob credentials here: https://vercel.com/docs/storage/vercel-blob/quickstart#quickstart
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+`BLOB_READ_WRITE_TOKEN=`
 
-## Learn More
+ OPTIONAL: Vercel KV (for ratelimiting)
+ Get your Vercel KV credentials here: https://vercel.com/docs/storage/vercel-kv/quickstart#quickstart
 
-To learn more about Next.js, take a look at the following resources:
+`KV_REST_API_URL=`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+`KV_REST_API_TOKEN=`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## 
+`POSTGRES_URL=`
 
-## Deploy on Vercel
+`POSTGRES_PRISMA_URL=`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+`POSTGRES_URL_NO_SSL=`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+`POSTGRES_URL_NON_POOLING=`
+
+`POSTGRES_USER=`
+
+`POSTGRES_HOST=`
+
+`POSTGRES_PASSWORD=`
+
+`POSTGRES_DATABASE=`
+
+`VERCEL=`
+
+`VERCEL_ENV=`
+
+`AUTH_SECRET=`
+
+`AUTH_GOOGLE_ID=`
+
+`AUTH_GOOGLE_SECRET=`
+
+`AUTH_GITHUB_ID=`
+
+`AUTH_GITHUB_SECRET=`
+
+`NODEMAILER_EMAIL=`
+
+`NODEMAILER_PW=`
+
