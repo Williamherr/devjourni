@@ -14,11 +14,15 @@ import { sql } from "@vercel/postgres";
 export const db = drizzle(sql);
 
 export const users = pgTable("user", {
-  id: text("id").notNull().primaryKey(),
+  id: text("id")
+    .notNull()
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
   name: text("name"),
   email: text("email").notNull(),
   emailVerified: timestamp("emailVerified", { mode: "date" }),
   image: text("image"),
+  roles: text("roles").notNull().default("user"),
 });
 
 export const accounts = pgTable(

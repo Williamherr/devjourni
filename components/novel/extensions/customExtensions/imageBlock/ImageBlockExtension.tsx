@@ -92,7 +92,6 @@ const ImageBlockExtension = Image.extend({
       setImageBlockWidth:
         (width) =>
         ({ commands }) => {
-          console.log(width);
           commands.updateAttributes("image", {
             width: `${Math.max(0, Math.min(100, width))}%`,
           });

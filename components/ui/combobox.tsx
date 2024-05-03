@@ -30,15 +30,12 @@ export function CodeBlockComboBox({
 }) {
   const handleLanguageChange = (newLanguage: string) => {
     editor.commands.changeLanguage(newLanguage);
-
-    console.log(newLanguage);
   };
 
   const [open, setOpen] = useState(false);
 
   const value = node.attrs.language ?? "javascript";
 
-  console.log(value);
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
