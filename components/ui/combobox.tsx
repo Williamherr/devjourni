@@ -16,32 +16,29 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { common } from "lowlight";
 import { ScrollArea } from "./scroll-area";
 import { useState } from "react";
-import { EditorInstance } from "novel";
-import { toast } from "sonner";
+
+import { languages } from "../novel/extensions/customExtensions/codeBlock/langauges";
 
 export function CodeBlockComboBox({
   node,
   editor,
 }: {
   node: any;
-  editor: EditorInstance;
+  editor: any;
 }) {
   const handleLanguageChange = (newLanguage: string) => {
-    (
-      editor as EditorInstance & {
-        commands: { changeLanguage: (language: string) => void };
-      }
-    ).commands.changeLanguage(newLanguage);
+    editor.commands.changeLanguage(newLanguage);
+
+    console.log(newLanguage);
   };
 
   const [open, setOpen] = useState(false);
 
   const value = node.attrs.language ?? "javascript";
-  const languages = Object.keys(common);
 
+  console.log(value);
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>

@@ -20,9 +20,7 @@ function ResizableLayout({ children }: { children: ReactNode }) {
           <SideBar />
         </ResizablePanel>
         <ResizableHandle withHandle />
-        <ResizablePanel defaultSize={75} className="!overflow-y-scroll">
-          {children}
-        </ResizablePanel>
+        <ResizablePanel defaultSize={75}>{children}</ResizablePanel>
       </ResizablePanelGroup>
     </>
   );

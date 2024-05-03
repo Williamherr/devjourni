@@ -1,10 +1,11 @@
 "use client";
 
-import TextEditor from "@/app/novel/components/Editor";
+import TextEditor from "@/components/novel/Editor";
 import useSWR from "swr";
 import { fetcher } from "@/lib/utils";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import EmptyState from "@/components/empty-state";
+import { isNullOrEmpty } from "@/lib/snippets";
 
 function Page({ params }: { params: { pageId: number } }) {
   const { data, error, isLoading } = useSWR(
@@ -16,13 +17,13 @@ function Page({ params }: { params: { pageId: number } }) {
   if (isLoading)
     return <LoadingSpinner size={45} className="relative m-auto" />;
 
-  return (
-    !isLoading && (
-      <TextEditor
-        doc={JSON.parse(data.pages.rows[0].doc)}
-        pageId={params.pageId}
-      />
-    )
+  return !isNullOrEmpty(data.pages.rows) ? (
+    <TextEditor
+      doc={JSON.parse(data.pages.rows[0]?.doc)}
+      pageId={params.pageId}
+    />
+  ) : (
+    <EmptyState />
   );
 }
 
