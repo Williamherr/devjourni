@@ -22,7 +22,7 @@ export const users = pgTable("user", {
   email: text("email").notNull(),
   emailVerified: timestamp("emailVerified", { mode: "date" }),
   image: text("image"),
-  roles: text("roles").notNull().default("user"),
+  role: text("role").notNull().default("user"),
 });
 
 export const accounts = pgTable(
@@ -75,4 +75,12 @@ export const pages = pgTable("pages", {
   name: text("name").notNull(),
   doc: json("doc").notNull(),
   lastupdate: timestamp("lastupdate", { mode: "date" }).notNull(),
+});
+
+export const notes = pgTable("notes", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  doc: json("doc").notNull(),
+  lastUpdated: timestamp("lastupdate", { mode: "date" }).notNull(),
+  lastUpdatedBy: text("uid").references(() => users.id),
 });

@@ -34,9 +34,11 @@ const extensions = [...defaultExtensions, slashCommand];
 const TextEditor = ({
   doc,
   pageId,
+  editable = true,
 }: {
   doc: null | JSONContent;
   pageId: null | number;
+  editable?: boolean;
 }) => {
   const [saveStatus, setSaveStatus] = useState("Saved");
   const [openNode, setOpenNode] = useState(false);
@@ -48,7 +50,7 @@ const TextEditor = ({
     async (editor: EditorInstance) => {
       const json = editor.getJSON();
       window.localStorage.setItem("novel-content", JSON.stringify(json));
-      if (!pageId) return;
+      if (!pageId && editable) return;
 
       fetch(`api/pages/${pageId}`, {
         method: "PUT",
@@ -67,6 +69,7 @@ const TextEditor = ({
       </div>
       <EditorRoot>
         <EditorContent
+          editable={editable}
           initialContent={doc || defaultEditorContent}
           extensions={extensions}
           className="lg:w-8/12 m-auto"
@@ -83,8 +86,8 @@ const TextEditor = ({
             },
           }}
           onUpdate={({ editor }) => {
-            debouncedUpdates(editor);
             setSaveStatus("Unsaved");
+            debouncedUpdates(editor);
           }}
         >
           <EditorCommand className="z-50 h-auto max-h-[330px] overflow-y-auto rounded-md border border-muted bg-background px-1 py-2 shadow-md transition-all">

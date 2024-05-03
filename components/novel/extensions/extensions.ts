@@ -22,6 +22,8 @@ const placeholder = Placeholder.configure({
       case "heading":
         return `Heading ${node.attrs.level}`;
       case "codeBlock":
+      case "Table":
+      case "TableCell":
         return "";
       default:
         return "Press '/' for commands";
@@ -98,6 +100,18 @@ const starterKit = StarterKit.configure({
   gapcursor: false,
 });
 
+import Table from "@tiptap/extension-table";
+import TableCell from "@tiptap/extension-table-cell";
+import TableHeader from "@tiptap/extension-table-header";
+import TableRow from "@tiptap/extension-table-row";
+import Gapcursor from "@tiptap/extension-gapcursor";
+
+// const table = Table.configure({
+//   HTMLAttributes: {
+//     class: cx("mt-4 mb-6 border-t border-muted-foreground"),
+//   },
+// });
+
 export const defaultExtensions = [
   starterKit,
   placeholder,
@@ -107,5 +121,12 @@ export const defaultExtensions = [
   taskItem,
   horizontalRule,
   aiHighlight,
+  Gapcursor,
+  Table.configure({
+    resizable: true,
+  }),
+  TableRow,
+  TableHeader,
+  TableCell,
   ...customExtensions,
 ];
