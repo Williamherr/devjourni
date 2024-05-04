@@ -69,6 +69,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       console.debug(code, message);
     },
   },
+  // @ts-ignore
   adapter: DrizzleAdapter(db),
   providers: [
     {
