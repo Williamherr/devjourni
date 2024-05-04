@@ -50,6 +50,7 @@ const SideBar = () => {
       case "Logout":
         return (
           <Button
+            key={key}
             variant={"ghost"}
             onClick={logout}
             className="w-full flex justify-start"

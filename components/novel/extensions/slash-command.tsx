@@ -153,6 +153,20 @@ export const suggestionItems = createSuggestionItems([
       input.click();
     },
   },
+  {
+    title: "Table",
+    description: "Insert a table.",
+    searchTerms: ["table"],
+    icon: <ImageIcon size={18} />,
+    command: ({ editor, range }) => {
+      editor
+        .chain()
+        .focus()
+        .deleteRange(range)
+        .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
+        .run();
+    },
+  },
 ]);
 
 export const slashCommand = Command.configure({

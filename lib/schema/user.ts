@@ -4,9 +4,9 @@ import { db, users } from "./schema";
 
 type User = typeof users.$inferInsert;
 
-const getUser = async (email: string): Promise<User | null> => {
-  if (isNullOrEmpty(email)) return null;
-  const user = await db.select().from(users).where(eq(users.email, email));
+const getUser = async (id: string): Promise<User | null> => {
+  if (isNullOrEmpty(id)) return null;
+  const user = await db.select().from(users).where(eq(users.id, id));
 
   return user[0] ?? null;
 };

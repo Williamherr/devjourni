@@ -1,13 +1,16 @@
 import { Session } from "next-auth";
 import { JWT } from "next-auth/jwt";
 
-// This will be the shape of your user object.
-// You can extend this as you need.
-interface User {
-  name: string;
-  email: string;
-  image: string;
-  password: string;
+declare module "next-auth" {
+  interface Session {
+    id: string;
+    role: string;
+  }
+
+  interface User {
+    id: string;
+    role: string;
+  }
 }
 
 // Extend the Session interface with the User object

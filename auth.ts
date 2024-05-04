@@ -4,6 +4,7 @@ import GoogleProvider from "next-auth/providers/google";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { db } from "@/lib/schema/schema";
 import { createPages } from "./lib/schema/pages";
+import { getUser } from "./lib/schema/user";
 
 async function sendVerificationRequest({
   identifier: email,
@@ -68,6 +69,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       console.debug(code, message);
     },
   },
+  // @ts-ignore
   adapter: DrizzleAdapter(db),
   providers: [
     {
@@ -89,7 +91,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   },
   callbacks: {
     async session({ session, user }) {
-      session.user.id = user.id;
+      const dbUser = await getUser(user.id);
+      session.user.role = dbUser?.role || "user";
       return session;
     },
   },

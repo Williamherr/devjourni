@@ -8,10 +8,11 @@ import {
 } from "react";
 import { ThemeProvider, useTheme } from "next-themes";
 import { Toaster } from "sonner";
-// import { Analytics } from "@vercel/analytics/react";
+import { Analytics } from "@vercel/analytics/react";
 import useLocalStorage from "@/hooks/use-local-storage";
 import { SessionProvider, useSession } from "next-auth/react";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const AppContext = createContext<{
   font: string;
@@ -49,7 +50,8 @@ export default function Providers({ children }: { children: ReactNode }) {
           <ToasterProvider />
           <Auth>{children}</Auth>
 
-          {/* <Analytics /> */}
+          <Analytics />
+          <SpeedInsights />
         </AppContext.Provider>
       </SessionProvider>
     </ThemeProvider>
