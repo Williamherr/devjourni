@@ -49,8 +49,13 @@ const TextEditor = ({
   const debouncedUpdates = useDebouncedCallback(
     async (editor: EditorInstance) => {
       const json = editor.getJSON();
-      window.localStorage.setItem("novel-content", JSON.stringify(json));
-      if (!pageId && editable) return;
+
+      if (!editable) return;
+      if (!pageId) {
+        window.localStorage.setItem("novel-content", JSON.stringify(json));
+        setSaveStatus("Saved");
+        return;
+      }
 
       fetch(`api/pages/${pageId}`, {
         method: "PUT",
@@ -58,7 +63,15 @@ const TextEditor = ({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ doc: json }),
-      }).finally(() => setSaveStatus("Saved"));
+      })
+        .then((res) => {
+          if (res.ok) {
+            console.log("Page saved");
+          } else {
+            console.log("Failed to save page");
+          }
+        })
+        .finally(() => setSaveStatus("Saved"));
     },
     500
   );

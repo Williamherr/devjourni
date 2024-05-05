@@ -36,9 +36,11 @@ const CreatePages = () => {
       .then((data: PageCount) => {
         let id = data.id;
         if (id != 0) {
+          setTitle("");
           setOpen(false);
-          router.push(`/${id}`);
+          window.localStorage.removeItem("novel-content");
           mutate(`/api/pages`);
+          router.push(`/${id}`);
         }
       });
   };
@@ -55,10 +57,16 @@ const CreatePages = () => {
           <Input
             placeholder="Page title"
             onChange={(e) => setTitle(e.target.value)}
+            value={title}
           />
           <div className="flex-1">
             <div className="flex h-full min-h-72 max-h-[60vh]">
-              <TextEditor doc={null} pageId={null} />
+              <TextEditor
+                doc={JSON.parse(
+                  window.localStorage.getItem("novel-content") || "{}"
+                )}
+                pageId={null}
+              />
             </div>
           </div>
 
