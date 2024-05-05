@@ -5,14 +5,8 @@ import TextEditor from "@/components/novel/Editor";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { tipTapShortcuts } from "@/lib/content";
 import { isNullOrEmpty } from "@/lib/snippets";
-import { fetcher } from "@/lib/utils";
+import { fetcher, options } from "@/lib/utils";
 import useSWRImmutable from "swr";
-
-const options = {
-  revalidateIfStale: true,
-  revalidateOnReconnect: false,
-  revalidateOnFocus: false,
-};
 
 function Page() {
   const {

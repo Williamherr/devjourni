@@ -18,7 +18,7 @@ import { signOut } from "next-auth/react";
 
 const SideBar = () => {
   const sideBarButtonPages = ({ name, icon: Icon, id }: Pages, key: number) => (
-    <div
+    <li
       key={key}
       className={`${buttonVariants({
         variant: "ghost",
@@ -36,7 +36,7 @@ const SideBar = () => {
           <PageMenu id={id} />
         </span>
       </Link>
-    </div>
+    </li>
   );
   async function logout() {
     await signOut();
@@ -76,9 +76,11 @@ const SideBar = () => {
             sideBarButton(link, index)
           )}
           <ScrollArea className="sideBarScroll my-4 border-t-2 w-full">
-            {data.pages?.map((route: Pages, index: number) =>
-              sideBarButtonPages({ ...route }, index)
-            )}
+            <ul>
+              {data.pages?.map((route: Pages, index: number) =>
+                sideBarButtonPages({ ...route }, index)
+              )}
+            </ul>
           </ScrollArea>
         </div>
       </div>
