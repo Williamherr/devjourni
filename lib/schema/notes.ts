@@ -22,6 +22,15 @@ export const createNotes = async (
 
 export const getAllNotes = async () => {
   const allPage = await db
+    .select({ doc: notes.doc })
+    .from(notes)
+    .orderBy(desc(notes.lastUpdatedBy));
+
+  return allPage;
+};
+
+export const getAllNoteNames = async () => {
+  const allPage = await db
     .select({ id: notes.id, name: notes.name })
     .from(notes)
     .orderBy(desc(notes.lastUpdatedBy));

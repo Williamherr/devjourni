@@ -1,6 +1,5 @@
-import { sql } from "@vercel/postgres";
 import { NextResponse } from "next/server";
-import { deleteDoc, updateDoc } from "@/lib/schema/notes";
+import { deleteDoc, getAllNotes, updateDoc } from "@/lib/schema/notes";
 import { getUidByRole } from "@/lib/utils/session";
 
 export async function GET(
@@ -10,7 +9,8 @@ export async function GET(
   const { id: pageId } = params;
 
   try {
-    const notes = await sql`SELECT * FROM notes WHERE id=${pageId};`;
+    const notes = await getAllNotes();
+
     return NextResponse.json({ notes }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });

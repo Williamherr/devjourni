@@ -35,10 +35,12 @@ const TextEditor = ({
   doc,
   pageId,
   editable = true,
+  requireAdmin = false,
 }: {
   doc: null | JSONContent;
   pageId: null | number;
   editable?: boolean;
+  requireAdmin?: boolean;
 }) => {
   const [saveStatus, setSaveStatus] = useState("Saved");
   const [openNode, setOpenNode] = useState(false);
@@ -57,7 +59,9 @@ const TextEditor = ({
         return;
       }
 
-      fetch(`api/pages/${pageId}`, {
+      const apiEndpoint = requireAdmin ? "note" : "pages";
+      console.log(apiEndpoint);
+      fetch(`api/${apiEndpoint}/${pageId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
