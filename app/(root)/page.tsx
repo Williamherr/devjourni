@@ -23,12 +23,12 @@ function Page() {
   if (error || userError) return <EmptyState />;
   if (isLoading || userLoading)
     return <LoadingSpinner size={45} className="relative m-auto" />;
-
-  return !isNullOrEmpty(data.notes?.rows) ? (
+  return !isNullOrEmpty(data.notes[0]) ? (
     <TextEditor
       editable={user?.isAdmin || false}
-      doc={JSON.parse(data.notes?.rows[0].doc) || tipTapShortcuts}
-      pageId={null}
+      doc={data?.notes[0].doc || tipTapShortcuts}
+      pageId={1}
+      requireAdmin
     />
   ) : (
     <EmptyState />
