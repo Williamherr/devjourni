@@ -10,8 +10,7 @@ import { ThemeProvider, useTheme } from "next-themes";
 import { Toaster } from "sonner";
 import { Analytics } from "@vercel/analytics/react";
 import useLocalStorage from "@/hooks/use-local-storage";
-import { SessionProvider, useSession } from "next-auth/react";
-import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import { SessionProvider } from "next-auth/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const AppContext = createContext<{
@@ -48,7 +47,7 @@ export default function Providers({ children }: { children: ReactNode }) {
           }}
         >
           <ToasterProvider />
-          <Auth>{children}</Auth>
+          {children}
 
           <Analytics />
           <SpeedInsights />
@@ -56,15 +55,4 @@ export default function Providers({ children }: { children: ReactNode }) {
       </SessionProvider>
     </ThemeProvider>
   );
-}
-
-function Auth({ children }: { children: ReactNode }) {
-  // if `{ required: true }` is supplied, `status` can only be "loading" or "authenticated"
-  const { status } = useSession({ required: true });
-
-  if (status === "loading") {
-    return <LoadingSpinner size={45} className="relative m-auto" />;
-  }
-
-  return children;
 }
