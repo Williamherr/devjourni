@@ -4,7 +4,7 @@ import TextEditor from "@/components/novel/Editor";
 import useSWR from "swr";
 import { fetcher, options } from "@/lib/utils";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
-import EmptyState from "@/components/empty-state";
+import EmptyState from "@/components/EmptyState";
 import { isNullOrEmpty } from "@/lib/snippets";
 
 function Page({ params }: { params: { pageId: number } }) {

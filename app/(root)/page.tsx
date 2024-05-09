@@ -1,7 +1,7 @@
 "use client";
 import { useSession } from "next-auth/react";
 
-import EmptyState from "@/components/empty-state";
+import EmptyState from "@/components/EmptyState";
 import TextEditor from "@/components/novel/Editor";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { tipTapShortcuts } from "@/lib/content";

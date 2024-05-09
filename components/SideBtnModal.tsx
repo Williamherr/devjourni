@@ -8,6 +8,7 @@ import { Input } from "./ui/input";
 import TextEditor from "@/components/novel/Editor";
 import { useRouter } from "next/navigation";
 import { mutate } from "swr";
+import { SettingTabs } from "./settings/SettingTabs";
 
 interface PageCount {
   id: number;
@@ -89,7 +90,7 @@ const Settings = () => {
       </DialogTrigger>
       <DialogContent className="w-full md:h-[80vh] h-full">
         <div className="flex flex-col space-y-8 mt-5">
-          <Button className="md:self-end">Update</Button>
+          <SettingTabs />
         </div>
       </DialogContent>
     </Dialog>
