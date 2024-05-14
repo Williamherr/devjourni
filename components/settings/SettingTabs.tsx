@@ -1,66 +1,32 @@
-import { Button } from "@/components/ui/button";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Settings } from "./Settings";
-import { ScrollArea } from "@radix-ui/react-scroll-area";
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/vertical-tabs";
+import { AccountSettings } from "./AccountSettings";
+import { ScrollArea } from "../ui/scroll-area";
+import EditorSettings from "./EditorSettings";
 
 export function SettingTabs() {
   return (
-    <Tabs defaultValue="account" className="w-full h-full">
-      <TabsList className="grid w-full grid-cols-2">
-        <TabsTrigger value="account">Account</TabsTrigger>
-        <TabsTrigger value="password">Password</TabsTrigger>
-      </TabsList>
-      <ScrollArea>
-        <TabsContent value="account">
-          <Card>
-            <CardHeader>
-              <CardTitle>Account</CardTitle>
-              <CardDescription>
-                Make changes to your account here. Click save when you're done.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <Settings></Settings>
-            </CardContent>
-            <CardFooter>
-              <Button>Save changes</Button>
-            </CardFooter>
-          </Card>
-        </TabsContent>
-        <TabsContent value="password">
-          <Card>
-            <CardHeader>
-              <CardTitle>Password</CardTitle>
-              <CardDescription>
-                Change your password here. After saving, you'll be logged out.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <div className="space-y-1">
-                <Label htmlFor="current">Current password</Label>
-                <Input id="current" type="password" />
-              </div>
-              <div className="space-y-1">
-                <Label htmlFor="new">New password</Label>
-                <Input id="new" type="password" />
-              </div>
-            </CardContent>
-            <CardFooter>
-              <Button>Save password</Button>
-            </CardFooter>
-          </Card>
-        </TabsContent>
-      </ScrollArea>
-    </Tabs>
+    <div className="flex w-full h-full">
+      <Tabs defaultValue="account" className="flex-grow">
+        <div className="flex h-full border border-l-0 rounded-r-md">
+          <TabsList className="">
+            <TabsTrigger value="account">Account</TabsTrigger>
+            <TabsTrigger value="editor">Editor</TabsTrigger>
+          </TabsList>
+          <ScrollArea className="w-full mb-20">
+            <TabsContent value="account" className="w-full">
+              <AccountSettings />
+            </TabsContent>
+            <TabsContent value="editor">
+              <EditorSettings />
+            </TabsContent>
+          </ScrollArea>
+        </div>
+      </Tabs>
+    </div>
   );
 }

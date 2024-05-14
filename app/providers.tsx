@@ -17,7 +17,7 @@ export const AppContext = createContext<{
   font: string;
   setFont: Dispatch<SetStateAction<string>>;
 }>({
-  font: "Default",
+  font: "Inter",
   setFont: () => {},
 });
 
@@ -29,7 +29,7 @@ const ToasterProvider = () => {
 };
 
 export default function Providers({ children }: { children: ReactNode }) {
-  const [font, setFont] = useLocalStorage<string>("novel__font", "Default");
+  const [font, setFont] = useLocalStorage<string>("novel__font", "Inter");
 
   return (
     <ThemeProvider

@@ -89,7 +89,7 @@ const Settings = () => {
         </Button>
       </DialogTrigger>
       <DialogContent className="w-full md:h-[80vh] h-full">
-        <div className="flex flex-col space-y-8 mt-5">
+        <div className="flex flex-col space-y-8 mt-5 overflow-hidden">
           <SettingTabs />
         </div>
       </DialogContent>
