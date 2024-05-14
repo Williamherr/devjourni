@@ -40,4 +40,4 @@ const validations = (uid: string) => {
   if (uid === null) throw new Error("There are no uid");
 };
 
-export { getUidByRole, getUidByRoleClient };
+export { getUidByRole, getUidByRoleClient, isUserAdmin };

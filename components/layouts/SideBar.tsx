@@ -13,7 +13,7 @@ import { ScrollArea } from "../ui/scroll-area";
 import { CreatePages, Settings } from "../SideBtnModal";
 import { PageMenu } from "../PageMenu";
 import { LoadingSpinner } from "../ui/loading-spinner";
-import EmptyState from "../empty-state";
+import EmptyState from "../EmptyState";
 import { signOut } from "next-auth/react";
 
 const SideBar = () => {

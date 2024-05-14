@@ -28,6 +28,7 @@ import GenerativeMenuSwitch from "./generative/generative-menu-switch";
 import { slashCommand, suggestionItems } from "./extensions/slash-command";
 
 import { uploadFn } from "./extensions/image-upload";
+import { FontSelector } from "./selectors/font-selector";
 
 const extensions = [...defaultExtensions, slashCommand];
 
@@ -45,6 +46,7 @@ const TextEditor = ({
   const [saveStatus, setSaveStatus] = useState("Saved");
   const [openNode, setOpenNode] = useState(false);
   const [openColor, setOpenColor] = useState(false);
+  const [openFont, setOpenFont] = useState(false);
   const [openLink, setOpenLink] = useState(false);
   const [openAI, setOpenAI] = useState(false);
 
@@ -143,6 +145,7 @@ const TextEditor = ({
             <TextButtons />
             <Separator orientation="vertical" />
             <ColorSelector open={openColor} onOpenChange={setOpenColor} />
+            <FontSelector open={openFont} onOpenChange={setOpenFont} />
           </GenerativeMenuSwitch>
         </EditorContent>
       </EditorRoot>

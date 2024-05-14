@@ -9,6 +9,9 @@ import {
   AIHighlight,
 } from "novel/extensions";
 
+import FontFamily from "@tiptap/extension-font-family";
+import TextStyle from "@tiptap/extension-text-style";
+
 import { cx } from "class-variance-authority";
 
 import customExtensions from "./customExtensions";
@@ -128,5 +131,7 @@ export const defaultExtensions = [
   TableRow,
   TableHeader,
   TableCell,
+  FontFamily,
+  TextStyle,
   ...customExtensions,
 ];
