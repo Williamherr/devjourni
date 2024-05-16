@@ -4,6 +4,8 @@
 
 @layer base {
   :root {
+    --sidebar: 210, 13%, 85%;
+
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 
@@ -46,6 +48,8 @@
   }
 
   .dark {
+    --sidebar: 210, 14%, 31%;
+
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
 
