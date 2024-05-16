@@ -15,11 +15,12 @@ export const EditorContext = createContext<{
 });
 
 export const EditorProvider = ({ children }: { children: React.ReactNode }) => {
-  // Get initial width from localStorage or set a default value
-  const initialWidth = localStorage.getItem("editorWidth") || "w-6/12";
+  const initialWidth: string =
+    typeof window !== "undefined"
+      ? window.localStorage.getItem("editorWidth") || "w-6/12"
+      : "w-6/12";
   const [width, setWidth] = useState(initialWidth);
 
-  // Update localStorage whenever width changes
   useEffect(() => {
     localStorage.setItem("editorWidth", width);
   }, [width]);
