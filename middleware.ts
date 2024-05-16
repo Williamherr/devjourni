@@ -8,7 +8,7 @@ export default auth((req) => {
     return NextResponse.redirect(new URL("/api/auth/signin", req.url));
   }
 
-  if (req.nextUrl.pathname.startsWith("/api/note")) {
+  if (req.nextUrl.pathname.startsWith("/api/note") && req.method != "GET") {
     return isAdminHandler(auth.user?.role || "");
   }
 });
