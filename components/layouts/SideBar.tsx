@@ -38,26 +38,13 @@ const SideBar = () => {
       </Link>
     </li>
   );
-  async function logout() {
-    await signOut();
-  }
+
   const sideBarButton = (pageName: string, key: number): JSX.Element => {
     switch (pageName) {
       case "New page":
         return <CreatePages key={key} />;
       case "Settings":
         return <Settings key={key} />;
-      case "Logout":
-        return (
-          <Button
-            key={key}
-            variant={"ghost"}
-            onClick={logout}
-            className="w-full flex justify-start"
-          >
-            <GearIcon className="mr-2 h-4 w-4" /> Logout
-          </Button>
-        );
       default:
         return <></>;
     }
