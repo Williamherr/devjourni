@@ -1,6 +1,6 @@
 "use client";
 import { defaultEditorContent } from "@/lib/content";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import {
   EditorRoot,
@@ -29,6 +29,7 @@ import { slashCommand, suggestionItems } from "./extensions/slash-command";
 
 import { uploadFn } from "./extensions/image-upload";
 import { FontSelector } from "./selectors/font-selector";
+import { EditorContext } from "@/context/EditorContext";
 
 const extensions = [...defaultExtensions, slashCommand];
 
@@ -81,6 +82,8 @@ const TextEditor = ({
     },
     500
   );
+  const { width }: { width: string } = useContext(EditorContext);
+
   return (
     <ScrollArea className="w-full h-full scrollEditor">
       <div className="absolute right-5 top-5 z-10 mb-5 rounded-lg bg-accent px-2 py-1 text-sm text-muted-foreground">
@@ -91,7 +94,7 @@ const TextEditor = ({
           editable={editable}
           initialContent={doc || defaultEditorContent}
           extensions={extensions}
-          className="lg:w-8/12 m-auto"
+          className={`lg:${width} m-auto`}
           editorProps={{
             handleDOMEvents: {
               keydown: (_view, event) => handleCommandNavigation(event),

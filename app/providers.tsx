@@ -12,6 +12,7 @@ import { Analytics } from "@vercel/analytics/react";
 import useLocalStorage from "@/hooks/use-local-storage";
 import { SessionProvider } from "next-auth/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { EditorProvider } from "@/context/EditorContext";
 
 export const AppContext = createContext<{
   font: string;
@@ -46,11 +47,12 @@ export default function Providers({ children }: { children: ReactNode }) {
             setFont,
           }}
         >
-          <ToasterProvider />
-          {children}
-
-          <Analytics />
-          <SpeedInsights />
+          <EditorProvider>
+            <ToasterProvider />
+            {children}
+            <Analytics />
+            <SpeedInsights />
+          </EditorProvider>
         </AppContext.Provider>
       </SessionProvider>
     </ThemeProvider>
