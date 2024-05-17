@@ -22,7 +22,6 @@ export const EditorProvider = ({ children }: { children: React.ReactNode }) => {
     const localWidth = window.localStorage.getItem("editorWidth");
     if (localWidth) {
       setWidth(localWidth);
-      console.log(localWidth);
     }
   }, []);
 
