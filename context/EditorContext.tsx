@@ -1,3 +1,4 @@
+import { isNullOrEmpty } from "@/lib/snippets";
 import React, {
   Dispatch,
   SetStateAction,
@@ -15,14 +16,18 @@ export const EditorContext = createContext<{
 });
 
 export const EditorProvider = ({ children }: { children: React.ReactNode }) => {
-  const initialWidth: string =
-    typeof window !== "undefined"
-      ? window.localStorage.getItem("editorWidth") || "w-6/12"
-      : "w-6/12";
-  const [width, setWidth] = useState(initialWidth);
+  const [width, setWidth] = useState("");
 
   useEffect(() => {
-    localStorage.setItem("editorWidth", width);
+    const localWidth = window.localStorage.getItem("editorWidth");
+    if (localWidth) {
+      setWidth(localWidth);
+      console.log(localWidth);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!isNullOrEmpty(width)) localStorage.setItem("editorWidth", width);
   }, [width]);
 
   return (
