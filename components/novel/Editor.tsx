@@ -89,69 +89,70 @@ const TextEditor = ({
       <div className="absolute right-5 top-5 z-10 mb-5 rounded-lg bg-accent px-2 py-1 text-sm text-muted-foreground">
         {saveStatus}
       </div>
-      <EditorRoot>
-        <EditorContent
-          editable={editable}
-          initialContent={doc || defaultEditorContent}
-          extensions={extensions}
-          className={`lg:${width} m-auto`}
-          editorProps={{
-            handleDOMEvents: {
-              keydown: (_view, event) => handleCommandNavigation(event),
-            },
-            handlePaste: (view, event) =>
-              handleImagePaste(view, event, uploadFn),
-            handleDrop: (view, event, _slice, moved) =>
-              handleImageDrop(view, event, moved, uploadFn),
-            attributes: {
-              class: `prose prose-lg dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full`,
-            },
-          }}
-          onUpdate={({ editor }) => {
-            setSaveStatus("Unsaved");
-            debouncedUpdates(editor);
-          }}
-        >
-          <EditorCommand className="z-50 h-auto max-h-[330px] overflow-y-auto rounded-md border border-muted bg-background px-1 py-2 shadow-md transition-all">
-            <EditorCommandEmpty className="px-2 text-muted-foreground">
-              No results
-            </EditorCommandEmpty>
-            <EditorCommandList>
-              {suggestionItems.map((item) => (
-                <EditorCommandItem
-                  value={item.title}
-                  onCommand={(val) => item.command && item.command(val)}
-                  className={`flex w-full items-center space-x-2 rounded-md px-2 py-1 text-left text-sm hover:bg-accent aria-selected:bg-accent `}
-                  key={item.title}
-                >
-                  <div className="flex h-10 w-10 items-center justify-center rounded-md border border-muted bg-background">
-                    {item.icon}
-                  </div>
-                  <div>
-                    <p className="font-medium">{item.title}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {item.description}
-                    </p>
-                  </div>
-                </EditorCommandItem>
-              ))}
-            </EditorCommandList>
-          </EditorCommand>
+      <div className={`${"lg:" + width || "lg:w-6/12"} m-auto`}>
+        <EditorRoot>
+          <EditorContent
+            editable={editable}
+            initialContent={doc || defaultEditorContent}
+            extensions={extensions}
+            editorProps={{
+              handleDOMEvents: {
+                keydown: (_view, event) => handleCommandNavigation(event),
+              },
+              handlePaste: (view, event) =>
+                handleImagePaste(view, event, uploadFn),
+              handleDrop: (view, event, _slice, moved) =>
+                handleImageDrop(view, event, moved, uploadFn),
+              attributes: {
+                class: `prose prose-lg dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full`,
+              },
+            }}
+            onUpdate={({ editor }) => {
+              setSaveStatus("Unsaved");
+              debouncedUpdates(editor);
+            }}
+          >
+            <EditorCommand className="z-50 h-auto max-h-[330px] overflow-y-auto rounded-md border border-muted bg-background px-1 py-2 shadow-md transition-all">
+              <EditorCommandEmpty className="px-2 text-muted-foreground">
+                No results
+              </EditorCommandEmpty>
+              <EditorCommandList>
+                {suggestionItems.map((item) => (
+                  <EditorCommandItem
+                    value={item.title}
+                    onCommand={(val) => item.command && item.command(val)}
+                    className={`flex w-full items-center space-x-2 rounded-md px-2 py-1 text-left text-sm hover:bg-accent aria-selected:bg-accent `}
+                    key={item.title}
+                  >
+                    <div className="flex h-10 w-10 items-center justify-center rounded-md border border-muted bg-background">
+                      {item.icon}
+                    </div>
+                    <div>
+                      <p className="font-medium">{item.title}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {item.description}
+                      </p>
+                    </div>
+                  </EditorCommandItem>
+                ))}
+              </EditorCommandList>
+            </EditorCommand>
 
-          <GenerativeMenuSwitch open={openAI} onOpenChange={setOpenAI}>
-            <Separator orientation="vertical" />
-            <NodeSelector open={openNode} onOpenChange={setOpenNode} />
-            <Separator orientation="vertical" />
+            <GenerativeMenuSwitch open={openAI} onOpenChange={setOpenAI}>
+              <Separator orientation="vertical" />
+              <NodeSelector open={openNode} onOpenChange={setOpenNode} />
+              <Separator orientation="vertical" />
 
-            <LinkSelector open={openLink} onOpenChange={setOpenLink} />
-            <Separator orientation="vertical" />
-            <TextButtons />
-            <Separator orientation="vertical" />
-            <ColorSelector open={openColor} onOpenChange={setOpenColor} />
-            <FontSelector open={openFont} onOpenChange={setOpenFont} />
-          </GenerativeMenuSwitch>
-        </EditorContent>
-      </EditorRoot>
+              <LinkSelector open={openLink} onOpenChange={setOpenLink} />
+              <Separator orientation="vertical" />
+              <TextButtons />
+              <Separator orientation="vertical" />
+              <ColorSelector open={openColor} onOpenChange={setOpenColor} />
+              <FontSelector open={openFont} onOpenChange={setOpenFont} />
+            </GenerativeMenuSwitch>
+          </EditorContent>
+        </EditorRoot>
+      </div>
     </ScrollArea>
   );
 };
