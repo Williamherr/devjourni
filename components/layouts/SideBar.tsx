@@ -2,14 +2,15 @@
 
 import Link from "next/link";
 import useSWR from "swr";
+import { ReaderIcon } from "@radix-ui/react-icons";
 
 import { buttonVariants } from "../ui/button";
 import { ScrollArea } from "../ui/scroll-area";
 import { LoadingSpinner } from "../ui/loading-spinner";
+
 import { CreatePages, Settings } from "../SideBtnModal";
 import { PageMenu } from "../PageMenu";
 import EmptyState from "../EmptyState";
-import { ReaderIcon } from "@radix-ui/react-icons";
 
 import { leftSideBarLinks as links } from "@/constants/link";
 import { fetcher } from "@/lib/utils";

@@ -1,20 +1,21 @@
 "use client";
 
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable";
-
-import SideBar from "@/components/layouts/SideBar";
 import { ReactNode, useEffect, useRef, useState } from "react";
-import { Button } from "../ui/button";
+import { ImperativePanelHandle } from "react-resizable-panels";
 
 import {
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
-import { ImperativePanelHandle } from "react-resizable-panels";
+
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
+import SideBar from "@/components/layouts/SideBar";
+
+import { Button } from "../ui/button";
 
 function ResizableLayout({ children }: { children: ReactNode }) {
   const ref = useRef<ImperativePanelHandle>(null);
@@ -39,7 +40,7 @@ function ResizableLayout({ children }: { children: ReactNode }) {
       <ResizablePanelGroup autoSaveId="sidebar" direction="horizontal">
         <ResizablePanel
           defaultSize={15}
-          maxSize={40}
+          maxSize={window.innerWidth <= 768 ? 65 : 40}
           collapsible={true}
           minSize={10}
           ref={ref}

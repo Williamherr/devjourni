@@ -85,13 +85,14 @@ const TextEditor = ({
   const { width }: { width: string } = useContext(EditorContext);
 
   return (
-    <ScrollArea className="w-full h-full scrollEditor">
+    <ScrollArea className="w-full h-full">
       <div className="absolute right-5 top-5 z-10 mb-5 rounded-lg bg-accent px-2 py-1 text-sm text-muted-foreground">
         {saveStatus}
       </div>
-      <div className={`${"lg:" + width || "lg:w-6/12"} m-auto mt-5`}>
+      <div className={`${"lg:" + width || "lg:w-6/12"} mt-5 w-full`}>
         <EditorRoot>
           <EditorContent
+            className="w-full"
             editable={editable}
             initialContent={doc || defaultEditorContent}
             extensions={extensions}
@@ -104,7 +105,7 @@ const TextEditor = ({
               handleDrop: (view, event, _slice, moved) =>
                 handleImageDrop(view, event, moved, uploadFn),
               attributes: {
-                class: `prose prose-lg dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full`,
+                class: `prose prose-lg dark:prose-invert prose-headings:font-title font-default focus:outline-none w-full max-w-full`,
               },
             }}
             onUpdate={({ editor }) => {
