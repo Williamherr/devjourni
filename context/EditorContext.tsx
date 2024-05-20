@@ -11,7 +11,7 @@ export const EditorContext = createContext<{
   width: string;
   setWidth: Dispatch<SetStateAction<string>>;
 }>({
-  width: "w-6/12",
+  width: "",
   setWidth: () => {},
 });
 
@@ -22,6 +22,8 @@ export const EditorProvider = ({ children }: { children: React.ReactNode }) => {
     const localWidth = window.localStorage.getItem("editorWidth");
     if (localWidth) {
       setWidth(localWidth);
+    } else {
+      setWidth("w-6/12");
     }
   }, []);
 

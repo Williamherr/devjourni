@@ -40,10 +40,12 @@ function ResizableLayout({ children }: { children: ReactNode }) {
       <ResizablePanelGroup autoSaveId="sidebar" direction="horizontal">
         <ResizablePanel
           defaultSize={15}
-          maxSize={window.innerWidth <= 768 ? 65 : 40}
+          maxSize={50}
           collapsible={true}
           minSize={10}
           ref={ref}
+          onExpand={() => setIsOpen(true)}
+          onCollapse={() => setIsOpen(false)}
         >
           <SideBar />
         </ResizablePanel>

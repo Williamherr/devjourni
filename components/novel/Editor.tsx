@@ -89,7 +89,11 @@ const TextEditor = ({
       <div className="absolute right-5 top-5 z-10 mb-5 rounded-lg bg-accent px-2 py-1 text-sm text-muted-foreground">
         {saveStatus}
       </div>
-      <div className={`${"lg:" + width || "lg:w-6/12"} mt-5 w-full`}>
+      <div
+        className={`${
+          "lg:" + width || "lg:w-6/12"
+        } mobile:w-screen mt-5 m-auto`}
+      >
         <EditorRoot>
           <EditorContent
             className="w-full"
