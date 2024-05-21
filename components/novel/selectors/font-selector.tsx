@@ -21,9 +21,6 @@ const TEXT_FONT = [
   {
     name: "monospace",
   },
-  {
-    name: "serif",
-  },
 ];
 
 interface FontSelectorProps {
@@ -35,9 +32,6 @@ export const FontSelector = ({ open, onOpenChange }: FontSelectorProps) => {
   const { editor } = useEditor();
 
   if (!editor) return null;
-  //   const activeColorItem = TEXT_FONT.find(({ name }) =>
-  //     editor.isActive("fontFamily", { name })
-  //   );
 
   return (
     <Popover modal={true} open={open} onOpenChange={onOpenChange}>

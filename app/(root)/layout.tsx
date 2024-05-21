@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "@/styles/globals.css";
 import "@/styles/prosemirror.css";
 import { ReactNode } from "react";
 import Providers from "../providers";
 import ResizableLayout from "@/components/layouts/ResizableLayout";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "DevJourni - Your Creative Space for Coding and Design Reflections",

@@ -82,7 +82,10 @@ const TextEditor = ({
     },
     500
   );
-  const { width }: { width: string } = useContext(EditorContext);
+  const { width, fontSize }: { width: string; fontSize: string } =
+    useContext(EditorContext);
+
+  console.log(fontSize);
 
   return (
     <ScrollArea className="w-full h-full">
@@ -92,7 +95,7 @@ const TextEditor = ({
       <div
         className={`${
           "lg:" + width || "lg:w-6/12"
-        } mobile:w-screen mt-5 m-auto`}
+        } mobile:w-screen mt-5 m-auto `}
       >
         <EditorRoot>
           <EditorContent
@@ -109,7 +112,7 @@ const TextEditor = ({
               handleDrop: (view, event, _slice, moved) =>
                 handleImageDrop(view, event, moved, uploadFn),
               attributes: {
-                class: `prose prose-lg dark:prose-invert prose-headings:font-title font-default focus:outline-none w-full max-w-full`,
+                class: ` prose prose-lg dark:prose-invert prose-headings:font-title font-default focus:outline-none w-full max-w-full`,
               },
             }}
             onUpdate={({ editor }) => {
