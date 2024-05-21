@@ -36,7 +36,7 @@ export const EditorProvider = ({ children }: { children: React.ReactNode }) => {
 
     setWidth(localWidth ?? "w-6/12");
     setFontFamily(localFontFamily ?? "font-sans");
-    setFontSize(localFontSize ?? "text-lg");
+    setFontSize(localFontSize ?? "text-md");
   }, []);
 
   useEffect(() => {
