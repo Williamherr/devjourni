@@ -10,7 +10,7 @@ import { Button } from "../ui/button";
 import { ScrollArea } from "../ui/scroll-area";
 
 import { AccountSettings } from "./AccountSettings";
-import EditorSettings from "./EditorSettings";
+import { EditorSettings } from "./EditorSettings";
 
 export function SettingTabs() {
   async function logout() {
