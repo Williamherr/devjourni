@@ -77,7 +77,7 @@ const config = {
       screens: {
         desktop: { max: "1023px" },
         tablet: { max: "767px" },
-        mobile: { max: "639px" },
+        mobile: { max: "640px" },
       },
     },
   },

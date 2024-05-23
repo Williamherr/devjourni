@@ -20,7 +20,7 @@ const CreatePages = () => {
 
   const createPageHandler = async () => {
     const doc = window.localStorage.getItem("novel-content");
-    await fetch(`/api/pages?${title}`, {
+    await fetch(`/api/pages`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -53,8 +53,8 @@ const CreatePages = () => {
           <Pencil2Icon className="mr-2 h-4 w-4"></Pencil2Icon> New page
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-full md:h-[80vh] h-full">
-        <div className="flex flex-col space-y-8 mt-5">
+      <DialogContent className="w-full md:h-[90vh] h-full">
+        <div className="flex flex-col space-y-8 mt-5 !w-11/12">
           <Input
             placeholder="Page title"
             onChange={(e) => setTitle(e.target.value)}

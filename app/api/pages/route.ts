@@ -10,13 +10,18 @@ export async function POST(request: Request) {
     const uid = session?.user?.id || "";
     if (isNullOrEmpty(uid)) throw new Error("There are no uid");
 
-    const { doc, pageName }: { doc: JSON; pageName: string } =
+    const {
+      doc,
+      pageName,
+      parentId,
+    }: { doc: JSON; pageName: string; parentId: number | null } =
       await request.json();
 
     const id = await createPages(
       uid,
       !isNullOrEmpty(pageName) ? pageName : "Untitled",
-      doc
+      doc,
+      parentId
     );
 
     return NextResponse.json({ id }, { status: 200 });
