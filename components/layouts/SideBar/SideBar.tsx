@@ -21,21 +21,24 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { ChevronsUpDown } from "lucide-react";
-import { useRef } from "react";
 
 const SideBar = () => {
   const sideBarButtonPages = (
     { id, name, icon: Icon, subpages }: Pages,
-    key: number
+    key: number,
+    level: number = 0
   ) => (
     <Collapsible>
       <li
         key={key}
         className={`${buttonVariants({
           variant: "ghost",
-        })} !justify-between gap-4 !flex group w-full `}
+        })} !justify-between gap-4 !flex group w-full`}
       >
-        <span className="flex items-center w-full">
+        <span
+          className={`flex items-center w-full`}
+          style={{ marginLeft: `${level}px` }}
+        >
           {Icon !== undefined && Icon !== null ? (
             <Icon className="mr-2 h-4 w-4" />
           ) : (
@@ -68,9 +71,16 @@ const SideBar = () => {
       </li>
       <CollapsibleContent className="space-y-2">
         {subpages && subpages.length > 0 ? (
-          subpages.map((subpage: number) => <div>{subpage}</div>)
+          subpages.map((value: Pages, index: number) =>
+            sideBarButtonPages({ ...value }, index, level + 2 * 10)
+          )
         ) : (
-          <>No pages</>
+          <div
+            style={{ paddingLeft: `${level + 2 * 24}px` }}
+            className="text-gray-400 bg-muted mx-1 rounded py-1"
+          >
+            No Pages
+          </div>
         )}
       </CollapsibleContent>
     </Collapsible>
@@ -91,7 +101,7 @@ const SideBar = () => {
   if (error) return <EmptyState />;
   if (isLoading)
     return <LoadingSpinner size={45} className="relative m-auto" />;
-
+  console.log(data);
   return (
     !isLoading && (
       <div className="h-full bg-sidebar">

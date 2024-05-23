@@ -1,6 +1,6 @@
 import { defaultEditorContent } from "@/lib/content";
 import { db, pages } from "./schema";
-import { and, desc, eq, sql } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import { isNullOrEmpty } from "@/lib/snippets";
 
 export const createPages = async (
@@ -26,10 +26,15 @@ export const createPages = async (
 export const getAllPages = async (uid: string) => {
   if (isNullOrEmpty(uid)) return null;
   const allPage = await db
-    .select({ id: pages.id, name: pages.name, subpages: pages.subpages })
+    .select({
+      id: pages.id,
+      name: pages.name,
+      subpages: pages.subpages,
+      parentId: pages.parentId,
+    })
     .from(pages)
     .orderBy(desc(pages.lastupdate))
-    .where(eq(pages.uid, uid));
+    .where(and(eq(pages.uid, uid)));
 
   return allPage;
 };
@@ -76,31 +81,4 @@ export const getRecentPage = async (uid: string) => {
     .limit(1);
 
   return page[0].id;
-};
-
-// subpages
-export const getAllSubpagesByPageId = async (id: number) => {
-  if (isNullOrEmpty(id)) return null;
-  const allPage = await db
-    .select({ subpages: pages.subpages })
-    .from(pages)
-    .orderBy(desc(pages.lastupdate))
-    .where(eq(pages.id, id));
-
-  return allPage[0].subpages;
-};
-
-export const updateSubpages = async (
-  uid: string,
-  id: number,
-  subpages: number[]
-) => {
-  if (isNullOrEmpty(uid) || isNullOrEmpty(id)) return null;
-
-  const updatedPage = await db
-    .update(pages)
-    .set({ subpages: subpages })
-    .where(and(eq(pages.uid, uid), eq(pages.id, id)));
-
-  return updatedPage;
 };

@@ -3,7 +3,7 @@ import { ForwardRefExoticComponent, RefAttributes } from "react";
 
 interface Pages {
   id: string;
-  subpages?: number[];
+  subpages?: Pages[];
   name: string;
   icon?: ForwardRefExoticComponent<IconProps & RefAttributes<SVGSVGElement>>;
 }
