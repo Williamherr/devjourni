@@ -13,7 +13,7 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
-import SideBar from "@/components/layouts/SideBar";
+import SideBar from "@/components/layouts/SideBar/SideBar";
 
 import { Button } from "../ui/button";
 

@@ -85,8 +85,6 @@ const TextEditor = ({
   const { width, fontSize }: { width: string; fontSize: string } =
     useContext(EditorContext);
 
-  console.log(fontSize);
-
   return (
     <ScrollArea className="w-full h-full">
       <div className="absolute right-5 top-5 z-10 mb-5 rounded-lg bg-accent px-2 py-1 text-sm text-muted-foreground">

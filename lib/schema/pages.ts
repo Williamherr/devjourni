@@ -6,7 +6,8 @@ import { isNullOrEmpty } from "@/lib/snippets";
 export const createPages = async (
   uid: string,
   pageName: string | null,
-  doc: JSON | null
+  doc: JSON | null,
+  parentId?: number | null | undefined
 ): Promise<number> => {
   if (isNullOrEmpty(uid)) return 0;
   const pageId: { insertedId: number }[] = await db
@@ -16,6 +17,7 @@ export const createPages = async (
       name: pageName || "Untitled",
       doc: doc ?? JSON.stringify(defaultEditorContent),
       lastupdate: new Date(),
+      parentId: parentId,
     })
     .returning({ insertedId: pages.id });
   return pageId[0].insertedId;
@@ -24,10 +26,15 @@ export const createPages = async (
 export const getAllPages = async (uid: string) => {
   if (isNullOrEmpty(uid)) return null;
   const allPage = await db
-    .select({ id: pages.id, name: pages.name })
+    .select({
+      id: pages.id,
+      name: pages.name,
+      subpages: pages.subpages,
+      parentId: pages.parentId,
+    })
     .from(pages)
     .orderBy(desc(pages.lastupdate))
-    .where(eq(pages.uid, uid));
+    .where(and(eq(pages.uid, uid)));
 
   return allPage;
 };

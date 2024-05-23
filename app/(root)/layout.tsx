@@ -16,6 +16,9 @@ export const metadata: Metadata = {
     Join a community that understands the unique blend of art and science in 
     the world of development. Start journaling your coding and design adventures today!
   `,
+  icons: {
+    icon: "/logo.svg",
+  },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

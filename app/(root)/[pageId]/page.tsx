@@ -18,7 +18,7 @@ function Page({ params }: { params: { pageId: number } }) {
   if (isLoading || isValidating)
     return <LoadingSpinner size={45} className="relative m-auto" />;
 
-  return !isNullOrEmpty(data.pages.rows) ? (
+  return !isNullOrEmpty(data.pages?.rows) ? (
     <>
       <TextEditor
         doc={JSON.parse(data.pages.rows[0]?.doc)}

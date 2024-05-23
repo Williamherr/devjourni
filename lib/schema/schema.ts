@@ -74,6 +74,8 @@ export const pages = pgTable("pages", {
   uid: text("uid").references(() => users.id, { onDelete: "cascade" }),
   name: text("name").notNull(),
   doc: json("doc").notNull(),
+  parentId: integer("parentId"),
+  subpages: integer("subpages").array(),
   lastupdate: timestamp("lastupdate", { mode: "date" }).notNull(),
 });
 
