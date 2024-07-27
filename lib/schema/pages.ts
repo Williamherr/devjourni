@@ -79,6 +79,26 @@ export const getRecentPage = async (uid: string) => {
     .orderBy(desc(pages.lastupdate))
     .where(eq(pages.uid, uid))
     .limit(1);
-
   return page[0].id;
 };
+
+import { pageAccess } from "./schema";
+
+// Function to add owner rights
+async function addOwnerRights(pageId: string) {
+  await db.insert(pageAccess).values({
+    pageId: pageId,
+    userId: "5936242b-61ad-4ed3-850e-f55ac41e26e",
+    accessLevel: "owner",
+    lastupdate: new Date(),
+  });
+}
+
+// Example usage
+addOwnerRights("your-page-id-here")
+  .then(() => {
+    console.log("Owner rights added successfully.");
+  })
+  .catch((error) => {
+    console.error("Error adding owner rights:", error);
+  });

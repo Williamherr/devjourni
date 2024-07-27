@@ -1,6 +1,6 @@
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { isNullOrEmpty } from "../snippets";
-import { db, users } from "./schema";
+import { db, pageAccess, users } from "./schema";
 
 type User = typeof users.$inferInsert;
 
@@ -13,6 +13,24 @@ const getUser = async (id: string): Promise<User | null> => {
 
 const createUser = async (user: User) => {
   return db.insert(users).values(user);
+};
+
+export const hasAccessToPage = async (
+  userId: string,
+  pageId: number
+): Promise<boolean> => {
+  if (!userId || !pageId) return false;
+
+  const access = await db
+    .select()
+    .from(pageAccess)
+    .where(
+      and(
+        eq(pageAccess.userId, userId),
+        eq(pageAccess.pageId, pageId.toString())
+      )
+    );
+  return access.length > 0;
 };
 
 export { getUser, createUser };

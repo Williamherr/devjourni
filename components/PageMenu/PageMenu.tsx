@@ -16,6 +16,7 @@ import {
   TrashIcon,
   Pencil2Icon,
   PlusIcon,
+  GearIcon,
 } from "@radix-ui/react-icons";
 
 import { RenamePopover } from "./Rename";
@@ -30,7 +31,7 @@ export function PageMenu({ id }: { id: number | string }) {
   const router = useRouter();
   const pathname = usePathname().substring(1);
 
-  const handler = () => {
+  const openRenameModal = () => {
     setOpen(true);
   };
 
@@ -72,13 +73,17 @@ export function PageMenu({ id }: { id: number | string }) {
               <PlusIcon width={20} height={20} className="mr-2" />
               Add Subpage
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={handler}>
+            <DropdownMenuItem onClick={openRenameModal}>
               <Pencil2Icon width={20} height={20} className="mr-2" />
               Rename
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => deletePages(pathname, id, router)}>
               <TrashIcon width={20} height={20} className="mr-2" />
               Delete
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => openRenameModal}>
+              <GearIcon width={20} height={20} className="mr-2" />
+              Settings
             </DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>
