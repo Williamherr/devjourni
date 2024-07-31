@@ -100,7 +100,7 @@ const SideBar = () => {
   const { data, error, isLoading } = useSWR(`/api/pages`, fetcher);
   if (error) return <EmptyState />;
   if (isLoading)
-    return <LoadingSpinner size={45} className="relative m-auto" />;
+    return <LoadingSpinner size={45} className="absolute top-1/2 left-16" />;
   console.log(data);
   return (
     !isLoading && (

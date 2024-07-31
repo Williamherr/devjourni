@@ -16,7 +16,7 @@ function Page({ params }: { params: { pageId: number } }) {
 
   if (error) return <EmptyState />;
   if (isLoading || isValidating)
-    return <LoadingSpinner size={45} className="relative m-auto" />;
+    return <LoadingSpinner size={45} className="absolute top-1/2 left-1/2" />;
 
   return !isNullOrEmpty(data.pages?.rows) ? (
     <>
