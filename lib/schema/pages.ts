@@ -2,6 +2,7 @@ import { defaultEditorContent } from "@/lib/content";
 import { db, pages } from "./schema";
 import { and, desc, eq } from "drizzle-orm";
 import { isNullOrEmpty } from "@/lib/snippets";
+import { addAdminAccess, removeAccess } from "../utils/access";
 
 export const createPages = async (
   uid: string,
@@ -10,7 +11,7 @@ export const createPages = async (
   parentId?: number | null | undefined
 ): Promise<number> => {
   if (isNullOrEmpty(uid)) return 0;
-  const pageId: { insertedId: number }[] = await db
+  const pageIds: { insertedId: number }[] = await db
     .insert(pages)
     .values({
       uid: uid,
@@ -20,7 +21,11 @@ export const createPages = async (
       parentId: parentId,
     })
     .returning({ insertedId: pages.id });
-  return pageId[0].insertedId;
+  const pageId = pageIds[0].insertedId;
+  if (pageId && pageId !== 0) {
+    await addAdminAccess(pageId.toString(), uid);
+  }
+  return pageId;
 };
 
 export const getAllPages = async (uid: string) => {
@@ -68,6 +73,10 @@ export const deleteDoc = async (uid: string, id: number) => {
     .delete(pages)
     .where(and(eq(pages.uid, uid), eq(pages.id, id)));
 
+  if (id && id !== 0) {
+    await removeAccess(id.toString(), uid);
+  }
+
   return deletedPage;
 };
 
@@ -81,24 +90,3 @@ export const getRecentPage = async (uid: string) => {
     .limit(1);
   return page[0].id;
 };
-
-import { pageAccess } from "./schema";
-
-// Function to add owner rights
-async function addOwnerRights(pageId: string) {
-  await db.insert(pageAccess).values({
-    pageId: pageId,
-    userId: "5936242b-61ad-4ed3-850e-f55ac41e26e",
-    accessLevel: "owner",
-    lastupdate: new Date(),
-  });
-}
-
-// Example usage
-addOwnerRights("your-page-id-here")
-  .then(() => {
-    console.log("Owner rights added successfully.");
-  })
-  .catch((error) => {
-    console.error("Error adding owner rights:", error);
-  });

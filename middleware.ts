@@ -5,20 +5,19 @@ import { hasReadAccess } from "./lib/utils/access";
 
 export default auth(async (req) => {
   const auth = req.auth;
-  if (!auth) {
+  if (!auth || !auth.user) {
     return NextResponse.redirect(new URL("/api/auth/signin", req.url));
   }
   const path = req.nextUrl.pathname;
   if (req.method === "GET" && /^\/\d+$/.test(path)) {
     let pageId = parseInt(path.trim().slice(1));
-    let hasAccess = await hasReadAccess(auth.user?.id ?? "", pageId);
+    let hasAccess = await hasReadAccess(auth.user.id ?? "", pageId);
+
     if (!hasAccess) {
-      return NextResponse.json(
-        { success: false, message: "authentication failed" },
-        { status: 401 }
-      );
+      return NextResponse.redirect(new URL(`/NotFound${pageId}`, req.url));
     }
   }
+
   if (path.startsWith("/api/note") && req.method != "GET") {
     return isAdminHandler(auth.user?.role || "");
   }

@@ -1,10 +1,9 @@
 import { defaultEditorContent } from "@/lib/content";
 import { db, pages } from "../schema";
 import { and, eq, inArray, sql } from "drizzle-orm";
-import { isNullOrEmpty } from "@/lib/snippets";
-import { isArray } from "util";
 import { PageMap } from "@/lib/utils/pageMaps";
 import { getAllPages } from "../pages";
+import { addAdminAccess, removeAccess } from "@/lib/utils/access";
 
 // createSubpagesTransaction creates a new subpage and adds it to the parent page
 export const createSubpagesTransaction = async (
@@ -33,6 +32,9 @@ export const createSubpagesTransaction = async (
         .update(pages)
         .set({ parentId: parentId })
         .where(and(eq(pages.uid, uid), eq(pages.id, subpageId)));
+      if (subpageId && subpageId !== 0) {
+        await addAdminAccess(subpageId.toString(), uid);
+      }
       return subpageId;
     })
     .catch((error) => {
@@ -84,6 +86,10 @@ export const deletePagesTransaction = async (
       await tx
         .delete(pages)
         .where(and(eq(pages.uid, uid), inArray(pages.id, allIds)));
+
+      if (id && id !== 0) {
+        await removeAccess(id.toString(), uid);
+      }
       return true;
     })
     .catch((error) => {

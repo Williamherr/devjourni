@@ -101,7 +101,7 @@ const SideBar = () => {
   if (error) return <EmptyState />;
   if (isLoading)
     return <LoadingSpinner size={45} className="absolute top-1/2 left-16" />;
-  console.log(data);
+
   return (
     !isLoading && (
       <div className="h-full bg-sidebar">
