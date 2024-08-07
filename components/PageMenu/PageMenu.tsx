@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { mutate } from "swr";
 
 import {
@@ -25,6 +24,7 @@ interface PageCount {
 }
 interface PageMenuProps {
   id: number | string;
+  pathname: string;
   menuPosition: MenuPosition;
   menuOpen: boolean;
   setMenuOpen: (open: boolean) => void;
@@ -42,9 +42,9 @@ export function PageMenu({
   menuOpen,
   setMenuOpen,
   setRenameOpen,
+  pathname,
 }: PageMenuProps) {
   const router = useRouter();
-  const pathname = usePathname().substring(1);
 
   const createPage = async () => {
     fetch("/api/pages/subpages/add", {

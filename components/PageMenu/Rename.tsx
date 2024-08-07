@@ -33,6 +33,10 @@ export const RenamePopover = ({
   const [name, setName] = useState("");
 
   const rename = async () => {
+    if (isNullOrEmpty(name)) {
+      toast.error("Name cannot be empty");
+      return;
+    }
     try {
       const response = await fetch(`/api/pages/${id}/page-name`, {
         method: "PUT",
@@ -70,7 +74,6 @@ export const RenamePopover = ({
         left: `${menuPosition.x}px`,
       }}
     >
-      {" "}
       <Popover open={open}>
         <PopoverTrigger></PopoverTrigger>
         <PopoverContent className="w-80">

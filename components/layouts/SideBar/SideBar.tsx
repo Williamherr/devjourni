@@ -23,74 +23,83 @@ import {
 import { ChevronsUpDown } from "lucide-react";
 import { useEffect, useState } from "react";
 import { RenamePopover } from "@/components/PageMenu/Rename";
+import { usePathname } from "next/navigation";
 
 const SideBar = () => {
+  const pathname = usePathname().substring(1);
+
   const sideBarButtonPages = (
     { id, name, icon: Icon, subpages }: Pages,
     key: number,
     level: number = 0
-  ) => (
-    <Collapsible>
-      <li
-        key={key}
-        className={`${buttonVariants({
-          variant: "ghost",
-        })} !justify-between gap-4 !flex group w-full`}
-      >
-        <span
-          className={`flex items-center w-full`}
-          style={{ marginLeft: `${level}px` }}
+  ) => {
+    return (
+      <Collapsible>
+        <li
+          key={key}
+          className={`${buttonVariants({
+            variant: "ghost",
+          })} ${id == pathname ? "bg-accent text-accent-foreground" : ""} !justify-between gap-4 !flex group w-`}
         >
-          {Icon !== undefined && Icon !== null ? (
-            <Icon className="mr-2 h-4 w-4" />
-          ) : (
-            <>
-              <span className="group-hover:hidden group-hover:w-fit mr-2 p-1">
-                <ReaderIcon className="h-4 w-4" />
-              </span>
-              <span className="group-hover:block group-hover:w-fit hidden w-0 rounded-sm mr-2">
-                <CollapsibleTrigger
-                  asChild
-                  className="block p-0 hover:bg-muted-foreground"
-                >
-                  <Button variant="ghost" size="sm" className="w-fit p-1 h-fit">
-                    <ChevronsUpDown className=" h-4 w-4" />
-                  </Button>
-                </CollapsibleTrigger>
-              </span>
-            </>
-          )}
-          <Link
-            href={id.toString()}
-            className="text-ellipsis overflow-hidden flex-1"
+          <span
+            className={`flex items-center w-full`}
+            style={{ marginLeft: `${level}px` }}
           >
-            {name}
-          </Link>
-          <span className="ml-auto group-hover:visible group-hover:block group-hover:w-fit invisible w-0 hover:bg-muted-foreground rounded-sm p-1 ">
-            <DotsHorizontalIcon
-              width={20}
-              height={20}
-              onClick={(e) => handleClick(e, parseInt(id))}
-            />
+            {Icon !== undefined && Icon !== null ? (
+              <Icon className="mr-2 h-4 w-4" />
+            ) : (
+              <>
+                <span className="group-hover:hidden group-hover:w-fit mr-2 p-1">
+                  <ReaderIcon className="h-4 w-4" />
+                </span>
+                <span className="group-hover:block group-hover:w-fit hidden w-0 rounded-sm mr-2">
+                  <CollapsibleTrigger
+                    asChild
+                    className="block p-0 hover:bg-muted-foreground"
+                  >
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="w-fit p-1 h-fit"
+                    >
+                      <ChevronsUpDown className=" h-4 w-4" />
+                    </Button>
+                  </CollapsibleTrigger>
+                </span>
+              </>
+            )}
+            <Link
+              href={id.toString()}
+              className="text-ellipsis overflow-hidden flex-1"
+            >
+              {name}
+            </Link>
+            <span className="ml-auto group-hover:visible group-hover:block group-hover:w-fit invisible w-0 hover:bg-muted-foreground rounded-sm p-1 ">
+              <DotsHorizontalIcon
+                width={20}
+                height={20}
+                onClick={(e) => handleClick(e, parseInt(id))}
+              />
+            </span>
           </span>
-        </span>
-      </li>
-      <CollapsibleContent className="space-y-2">
-        {subpages && subpages.length > 0 ? (
-          subpages.map((value: Pages, index: number) =>
-            sideBarButtonPages({ ...value }, index, level + 2 * 10)
-          )
-        ) : (
-          <div
-            style={{ paddingLeft: `${level + 2 * 24}px` }}
-            className="text-gray-400 bg-muted mx-1 rounded py-1"
-          >
-            No Pages
-          </div>
-        )}
-      </CollapsibleContent>
-    </Collapsible>
-  );
+        </li>
+        <CollapsibleContent className="space-y-2">
+          {subpages && subpages.length > 0 ? (
+            subpages.map((value: Pages, index: number) =>
+              sideBarButtonPages({ ...value }, index, level + 2 * 10)
+            )
+          ) : (
+            <div
+              style={{ paddingLeft: `${level + 2 * 24}px` }}
+              className="text-gray-400 bg-muted mx-1 rounded py-1"
+            >
+              No Pages
+            </div>
+          )}
+        </CollapsibleContent>
+      </Collapsible>
+    );
+  };
 
   const handleClick = (
     event: React.MouseEvent<SVGElement, MouseEvent>,
@@ -133,6 +142,7 @@ const SideBar = () => {
       <div className="h-full bg-sidebar">
         <PageMenu
           id={menuId}
+          pathname={pathname}
           menuOpen={menuOpen}
           menuPosition={menuPosition}
           setMenuOpen={setMenuOpen}
