@@ -1,6 +1,6 @@
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { isNullOrEmpty } from "../snippets";
-import { db, users } from "./schema";
+import { db, pageAccess, users } from "./schema";
 
 type User = typeof users.$inferInsert;
 

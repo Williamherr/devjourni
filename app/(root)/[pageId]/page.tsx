@@ -6,6 +6,7 @@ import { fetcher, options } from "@/lib/utils";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import EmptyState from "@/components/EmptyState";
 import { isNullOrEmpty } from "@/lib/snippets";
+import { PageMenu } from "@/components/PageMenu/PageMenu";
 
 function Page({ params }: { params: { pageId: number } }) {
   const { data, error, isLoading, isValidating } = useSWR(
@@ -16,7 +17,7 @@ function Page({ params }: { params: { pageId: number } }) {
 
   if (error) return <EmptyState />;
   if (isLoading || isValidating)
-    return <LoadingSpinner size={45} className="relative m-auto" />;
+    return <LoadingSpinner size={45} className="absolute top-1/2 left-1/2" />;
 
   return !isNullOrEmpty(data.pages?.rows) ? (
     <>

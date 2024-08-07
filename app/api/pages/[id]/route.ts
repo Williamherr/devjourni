@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { deleteDoc, getRecentPage, updateDoc } from "@/lib/schema/pages";
 import { isNullOrEmpty } from "@/lib/snippets";
+import { hasAdminAccess } from "@/lib/utils/access";
 
 export async function GET(
   request: Request,
@@ -53,6 +54,9 @@ export async function DELETE(
   try {
     if (isNullOrEmpty(uid)) throw new Error("There are no uid");
     if (isNullOrEmpty(deltedPageId)) throw new Error("There are no pageId");
+    let hasAccess = await hasAdminAccess(uid, deltedPageId);
+    if (!hasAccess)
+      throw new Error("You are not authorized to delete this page");
 
     await deleteDoc(uid, deltedPageId);
 

@@ -20,7 +20,7 @@ function Page() {
 
   if (error) return <EmptyState />;
   if (isLoading)
-    return <LoadingSpinner size={45} className="relative m-auto" />;
+    return <LoadingSpinner size={45} className="absolute top-1/2 left-1/2" />;
 
   return !isNullOrEmpty(data.notes[0]) ? (
     <TextEditor

@@ -6,6 +6,7 @@ import {
   integer,
   serial,
   json,
+  pgEnum,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccount } from "next-auth/adapters";
 import { drizzle } from "drizzle-orm/vercel-postgres";
@@ -76,6 +77,41 @@ export const pages = pgTable("pages", {
   doc: json("doc").notNull(),
   parentId: integer("parentId"),
   subpages: integer("subpages").array(),
+  lastupdate: timestamp("lastupdate", { mode: "date" }).notNull(),
+});
+
+// export const pages = pgTable("new_pages", {
+//   id: serial("id").primaryKey(),
+//   uid: text("uid").references(() => users.id, { onDelete: "cascade" }),
+//   name: text("name").notNull(),
+//   doc: json("doc").notNull(),
+//   parentId: integer("parentId").references((): AnyPgColumn => pages.id),
+//   lastupdate: timestamp("lastupdate", { mode: "date" }).notNull(),
+// });
+
+// export const pageRelationships = pgTable(
+//   "pageRelationships",
+//   {
+//     parentId: integer("parentId").references(() => pages.id),
+//     childId: integer("childId").references(() => pages.id),
+//   },
+//   (pr) => ({
+//     primaryKey: primaryKey({ columns: [pr.parentId, pr.childId] }),
+//   })
+// );
+
+export const accessLevelEnum = pgEnum("accessLevel", [
+  "read",
+  "write",
+  "admin",
+  "owner",
+]);
+
+export const pageAccess = pgTable("pageAccess", {
+  id: serial("id").primaryKey(),
+  pageId: text("pageId").notNull(),
+  userId: text("userId").notNull(),
+  accessLevel: text("accessLevel").notNull().default("read"),
   lastupdate: timestamp("lastupdate", { mode: "date" }).notNull(),
 });
 
