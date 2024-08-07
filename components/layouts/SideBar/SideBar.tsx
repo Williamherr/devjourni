@@ -67,8 +67,11 @@ const SideBar = () => {
             {name}
           </Link>
           <span className="ml-auto group-hover:visible group-hover:block group-hover:w-fit invisible w-0 hover:bg-muted-foreground rounded-sm p-1 ">
-            {/* <PageMenu id={id} /> */}
-            <DotsHorizontalIcon width={20} height={20} onClick={handleClick} />
+            <DotsHorizontalIcon
+              width={20}
+              height={20}
+              onClick={(e) => handleClick(e, parseInt(id))}
+            />
           </span>
         </span>
       </li>
@@ -89,9 +92,13 @@ const SideBar = () => {
     </Collapsible>
   );
 
-  const handleClick = (event: React.MouseEvent<SVGElement, MouseEvent>) => {
+  const handleClick = (
+    event: React.MouseEvent<SVGElement, MouseEvent>,
+    id: number
+  ) => {
     const { clientX, clientY } = event;
     setMenuPosition({ x: clientX, y: clientY });
+    setMenuId(id);
   };
 
   const sideBarButton = (pageName: string, key: number): JSX.Element => {

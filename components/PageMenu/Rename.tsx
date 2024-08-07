@@ -53,6 +53,7 @@ export const RenamePopover = ({
       toast.success("Page renamed successfully");
     } catch (error: any) {
       console.error("Error:", error);
+      toast.error(error.message);
     }
   };
 
