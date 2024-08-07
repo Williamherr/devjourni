@@ -8,9 +8,8 @@ import {
 } from "@/components/ui/vertical-tabs";
 import { Button } from "../ui/button";
 import { ScrollArea } from "../ui/scroll-area";
-
-import { AccountSettings } from "./AccountSettings";
-import { EditorSettings } from "./EditorSettings";
+import { AccountSettings } from "../settings/AccountSettings";
+import { EditorSettings } from "../settings/EditorSettings";
 
 export function SettingTabs() {
   async function logout() {

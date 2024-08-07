@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import useSWR from "swr";
-import { ReaderIcon } from "@radix-ui/react-icons";
+import { DotsHorizontalIcon, ReaderIcon } from "@radix-ui/react-icons";
 
 import { Button, buttonVariants } from "../../ui/button";
 import { ScrollArea } from "../../ui/scroll-area";
@@ -21,6 +21,8 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { ChevronsUpDown } from "lucide-react";
+import { useEffect, useState } from "react";
+import { RenamePopover } from "@/components/PageMenu/Rename";
 
 const SideBar = () => {
   const sideBarButtonPages = (
@@ -65,7 +67,8 @@ const SideBar = () => {
             {name}
           </Link>
           <span className="ml-auto group-hover:visible group-hover:block group-hover:w-fit invisible w-0 hover:bg-muted-foreground rounded-sm p-1 ">
-            <PageMenu id={id} />
+            {/* <PageMenu id={id} /> */}
+            <DotsHorizontalIcon width={20} height={20} onClick={handleClick} />
           </span>
         </span>
       </li>
@@ -86,6 +89,11 @@ const SideBar = () => {
     </Collapsible>
   );
 
+  const handleClick = (event: React.MouseEvent<SVGElement, MouseEvent>) => {
+    const { clientX, clientY } = event;
+    setMenuPosition({ x: clientX, y: clientY });
+  };
+
   const sideBarButton = (pageName: string, key: number): JSX.Element => {
     switch (pageName) {
       case "New page":
@@ -98,6 +106,17 @@ const SideBar = () => {
   };
 
   const { data, error, isLoading } = useSWR(`/api/pages`, fetcher);
+  const [renameOpen, setRenameOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
+  const [menuId, setMenuId] = useState(0);
+
+  useEffect(() => {
+    if (menuPosition.x !== 0 && menuPosition.y !== 0) {
+      setMenuOpen(true);
+    }
+  }, [menuPosition]);
+
   if (error) return <EmptyState />;
   if (isLoading)
     return <LoadingSpinner size={45} className="absolute top-1/2 left-16" />;
@@ -105,6 +124,19 @@ const SideBar = () => {
   return (
     !isLoading && (
       <div className="h-full bg-sidebar">
+        <PageMenu
+          id={menuId}
+          menuOpen={menuOpen}
+          menuPosition={menuPosition}
+          setMenuOpen={setMenuOpen}
+          setRenameOpen={setRenameOpen}
+        />
+        <RenamePopover
+          open={renameOpen}
+          setOpen={setRenameOpen}
+          menuPosition={menuPosition}
+          id={menuId}
+        />
         <div className="h-full flex flex-col">
           {links.map((link: string, index: number) =>
             sideBarButton(link, index)

@@ -12,28 +12,39 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-  DotsHorizontalIcon,
   TrashIcon,
   Pencil2Icon,
   PlusIcon,
   GearIcon,
 } from "@radix-ui/react-icons";
 
-import { RenamePopover } from "./Rename";
 import { deletePages } from "@/lib/utils/fetches/deletePages";
 
 interface PageCount {
   newId: number;
 }
+interface PageMenuProps {
+  id: number | string;
+  menuPosition: MenuPosition;
+  menuOpen: boolean;
+  setMenuOpen: (open: boolean) => void;
+  setRenameOpen: (open: boolean) => void;
+}
 
-export function PageMenu({ id }: { id: number | string }) {
-  const [open, setOpen] = useState(false);
+interface MenuPosition {
+  x: number;
+  y: number;
+}
+
+export function PageMenu({
+  id,
+  menuPosition,
+  menuOpen,
+  setMenuOpen,
+  setRenameOpen,
+}: PageMenuProps) {
   const router = useRouter();
   const pathname = usePathname().substring(1);
-
-  const openRenameModal = () => {
-    setOpen(true);
-  };
 
   const createPage = async () => {
     fetch("/api/pages/subpages/add", {
@@ -59,12 +70,15 @@ export function PageMenu({ id }: { id: number | string }) {
   };
 
   return (
-    <>
-      <RenamePopover open={open} setOpen={setOpen} id={id} />
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <DotsHorizontalIcon width={20} height={20} />
-        </DropdownMenuTrigger>
+    <div
+      style={{
+        position: "absolute",
+        top: `${menuPosition.y}px`,
+        left: `${menuPosition.x}px`,
+      }}
+    >
+      <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
+        <DropdownMenuTrigger></DropdownMenuTrigger>
         <DropdownMenuContent className="w-56">
           <DropdownMenuLabel>Page Edits</DropdownMenuLabel>
           <DropdownMenuSeparator />
@@ -73,7 +87,7 @@ export function PageMenu({ id }: { id: number | string }) {
               <PlusIcon width={20} height={20} className="mr-2" />
               Add Subpage
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={openRenameModal}>
+            <DropdownMenuItem onClick={() => setRenameOpen(true)}>
               <Pencil2Icon width={20} height={20} className="mr-2" />
               Rename
             </DropdownMenuItem>
@@ -81,13 +95,13 @@ export function PageMenu({ id }: { id: number | string }) {
               <TrashIcon width={20} height={20} className="mr-2" />
               Delete
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => openRenameModal}>
+            {/* <DropdownMenuItem onClick={() => openRenameModal}>
               <GearIcon width={20} height={20} className="mr-2" />
               Settings
-            </DropdownMenuItem>
+            </DropdownMenuItem> */}
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
-    </>
+    </div>
   );
 }

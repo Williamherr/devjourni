@@ -8,20 +8,31 @@ import {
 import { useState } from "react";
 import { isNullOrEmpty } from "@/lib/snippets";
 import { mutate } from "swr";
+import { Button } from "../ui/button";
+import { Check, X } from "lucide-react";
+import { toast } from "sonner";
+
+interface PageMenuProps {
+  id: number | string;
+  menuPosition: MenuPosition;
+  open: boolean;
+  setOpen: (open: boolean) => void;
+}
+
+interface MenuPosition {
+  x: number;
+  y: number;
+}
 
 export const RenamePopover = ({
   open,
   setOpen,
   id,
-}: {
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  id: number | string;
-}): JSX.Element => {
-  const [firstOpen, setFirstOpen] = useState(true);
+  menuPosition,
+}: PageMenuProps): JSX.Element => {
   const [name, setName] = useState("");
 
-  const rename = async (rename: string) => {
+  const rename = async () => {
     try {
       const response = await fetch(`/api/pages/${id}/page-name`, {
         method: "PUT",
@@ -29,7 +40,7 @@ export const RenamePopover = ({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          rename: rename,
+          rename: name,
         }),
       });
 
@@ -38,36 +49,52 @@ export const RenamePopover = ({
       }
 
       mutate(`/api/pages`);
-      console.log("done");
+      handleClose();
+      toast.success("Page renamed successfully");
     } catch (error: any) {
       console.error("Error:", error);
     }
   };
 
+  const handleClose = (): void => {
+    setName("");
+    setOpen(false);
+  };
+
   return (
-    <Popover
-      open={open}
-      onOpenChange={() => {
-        if (!firstOpen) {
-          setOpen(false);
-          if (!isNullOrEmpty(name)) rename(name);
-        }
-        setFirstOpen(() => !firstOpen);
+    <div
+      style={{
+        position: "absolute",
+        top: `${menuPosition.y}px`,
+        left: `${menuPosition.x}px`,
       }}
     >
-      <PopoverTrigger className="block"></PopoverTrigger>
-      <PopoverContent className="w-80">
-        <div className="grid gap-4">
-          <div className="grid grid-cols-3 items-center gap-4">
-            <Label htmlFor="name">Name</Label>
-            <Input
-              id="name"
-              className="col-span-2 h-full"
-              onChange={(e) => setName(e.target.value.trim())}
-            />
+      {" "}
+      <Popover open={open}>
+        <PopoverTrigger></PopoverTrigger>
+        <PopoverContent className="w-80">
+          <span
+            className="absolute top-1 right-1 hover:opacity-50"
+            onClick={handleClose}
+          >
+            <X />
+          </span>
+          <div className="grid gap-4 mt-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="name">Name</Label>
+              <div className="flex flex-row col-span-3 h-full">
+                <Input
+                  id="name"
+                  onChange={(e) => setName(e.target.value.trim())}
+                />
+                <Button onClick={rename}>
+                  <Check />
+                </Button>
+              </div>
+            </div>
           </div>
-        </div>
-      </PopoverContent>
-    </Popover>
+        </PopoverContent>
+      </Popover>
+    </div>
   );
 };
