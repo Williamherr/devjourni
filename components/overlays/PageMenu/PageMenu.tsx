@@ -1,5 +1,4 @@
 import { useRouter } from "next/navigation";
-import { mutate } from "swr";
 
 import {
   DropdownMenu,
@@ -10,30 +9,18 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  TrashIcon,
-  Pencil2Icon,
-  PlusIcon,
-  GearIcon,
-} from "@radix-ui/react-icons";
+import { TrashIcon, Pencil2Icon, PlusIcon } from "@radix-ui/react-icons";
+import { MenuPosition } from "@/context/ModalContext";
 
-import { deletePages } from "@/lib/utils/fetches/deletePages";
+import { createPageFetcher } from "@/lib/utils/fetches/index";
 
-interface PageCount {
-  newId: number;
-}
 interface PageMenuProps {
   id: number | string;
-  pathname: string;
   menuPosition: MenuPosition;
   menuOpen: boolean;
   setMenuOpen: (open: boolean) => void;
   setRenameOpen: (open: boolean) => void;
-}
-
-interface MenuPosition {
-  x: number;
-  y: number;
+  setAlertOpen: (open: boolean) => void;
 }
 
 export function PageMenu({
@@ -42,31 +29,13 @@ export function PageMenu({
   menuOpen,
   setMenuOpen,
   setRenameOpen,
-  pathname,
+  setAlertOpen,
 }: PageMenuProps) {
   const router = useRouter();
 
-  const createPage = async () => {
-    fetch("/api/pages/subpages/add", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id }),
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        } else {
-          console.error("Failed to create page");
-        }
-      })
-      .then(async (data: PageCount) => {
-        if (data.newId != 0) {
-          mutate(`/api/pages`);
-          router.push(`/${id}`);
-        }
-      });
+  const showAlert = () => {
+    setMenuOpen(false);
+    setAlertOpen(true);
   };
 
   return (
@@ -83,7 +52,7 @@ export function PageMenu({
           <DropdownMenuLabel>Page Edits</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem onClick={createPage}>
+            <DropdownMenuItem onClick={() => createPageFetcher(id, router)}>
               <PlusIcon width={20} height={20} className="mr-2" />
               Add Subpage
             </DropdownMenuItem>
@@ -91,7 +60,7 @@ export function PageMenu({
               <Pencil2Icon width={20} height={20} className="mr-2" />
               Rename
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => deletePages(pathname, id, router)}>
+            <DropdownMenuItem onClick={showAlert}>
               <TrashIcon width={20} height={20} className="mr-2" />
               Delete
             </DropdownMenuItem>

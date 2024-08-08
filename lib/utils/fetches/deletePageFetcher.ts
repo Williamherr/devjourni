@@ -1,8 +1,10 @@
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { getMostRecent } from "./getLatestPage";
 import { toast } from "sonner";
+import { mutate } from "swr";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
-export const deletePages = async (
+import { getMostRecent } from "./getLatestPage";
+
+export const deletePageFetcher = async (
   pathname: string,
   id: number | string,
   router: AppRouterInstance
@@ -19,8 +21,10 @@ export const deletePages = async (
         throw new Error(data.error);
       }
       if (id == pathname) {
-        getMostRecent(router);
+        await getMostRecent(router);
       }
+      mutate(`/api/pages`);
+      toast.success("Page deleted successfully");
     })
     .catch((error) => {
       toast.error("Error: " + error.message);

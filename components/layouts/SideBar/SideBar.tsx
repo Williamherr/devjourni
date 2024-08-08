@@ -8,7 +8,7 @@ import { Button, buttonVariants } from "../../ui/button";
 import { ScrollArea } from "../../ui/scroll-area";
 import { LoadingSpinner } from "../../ui/loading-spinner";
 
-import { CreatePages, Settings } from "../../SideBtnModal";
+import { CreatePages, Settings } from "../../overlays/SideBtnModal";
 import EmptyState from "../../EmptyState";
 
 import { leftSideBarLinks as links } from "@/constants/link";
@@ -30,13 +30,11 @@ const SideBar = () => {
 
   const sideBarButtonPages = (
     { id, name, icon: Icon, subpages }: Pages,
-    key: number,
     level: number = 0
   ) => {
     return (
-      <Collapsible>
+      <Collapsible key={id}>
         <li
-          key={key}
           className={`${buttonVariants({
             variant: "ghost",
           })} ${id == currentPageId ? "bg-accent text-accent-foreground" : ""} !justify-between gap-4 !flex group w-`}
@@ -85,8 +83,8 @@ const SideBar = () => {
         </li>
         <CollapsibleContent className="space-y-2">
           {subpages && subpages.length > 0 ? (
-            subpages.map((value: Pages, index: number) =>
-              sideBarButtonPages({ ...value }, index, level + 2 * 10)
+            subpages.map((value: Pages) =>
+              sideBarButtonPages({ ...value }, level + 2 * 10)
             )
           ) : (
             <div
@@ -110,7 +108,7 @@ const SideBar = () => {
     setMenuId(id);
   };
 
-  const sideBarButton = (pageName: string, key: number): JSX.Element => {
+  const sideBarButton = (pageName: string, key: string): JSX.Element => {
     switch (pageName) {
       case "New page":
         return <CreatePages key={key} />;
@@ -130,12 +128,12 @@ const SideBar = () => {
       <div className="h-full bg-sidebar">
         <div className="h-full flex flex-col">
           {links.map((link: string, index: number) =>
-            sideBarButton(link, index)
+            sideBarButton(link, "side-btn-" + index)
           )}
           <ScrollArea className="sideBarScroll my-2 py-2 border-t-2 w-full">
             <ul>
-              {data.pages?.map((route: Pages, index: number) =>
-                sideBarButtonPages({ ...route }, index)
+              {data.pages?.map((route: Pages) =>
+                sideBarButtonPages({ ...route })
               )}
             </ul>
           </ScrollArea>

@@ -63,7 +63,7 @@ const TextEditor = ({
       }
 
       const apiEndpoint = requireAdmin ? "note" : "pages";
-      console.log(apiEndpoint);
+
       fetch(`api/${apiEndpoint}/${pageId}`, {
         method: "PUT",
         headers: {

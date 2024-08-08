@@ -1,27 +1,25 @@
+import { useState } from "react";
+import { mutate } from "swr";
+import { toast } from "sonner";
+
+import { Check, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Button } from "../../ui/button";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useState } from "react";
-import { isNullOrEmpty } from "@/lib/snippets";
-import { mutate } from "swr";
-import { Button } from "../ui/button";
-import { Check, X } from "lucide-react";
-import { toast } from "sonner";
+import { MenuPosition } from "@/context/ModalContext";
 
-interface PageMenuProps {
+import { isNullOrEmpty } from "@/lib/snippets";
+
+interface RenamePopoverProps {
   id: number | string;
   menuPosition: MenuPosition;
   open: boolean;
   setOpen: (open: boolean) => void;
-}
-
-interface MenuPosition {
-  x: number;
-  y: number;
 }
 
 export const RenamePopover = ({
@@ -29,7 +27,7 @@ export const RenamePopover = ({
   setOpen,
   id,
   menuPosition,
-}: PageMenuProps): JSX.Element => {
+}: RenamePopoverProps): JSX.Element => {
   const [name, setName] = useState("");
 
   const rename = async () => {

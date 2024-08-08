@@ -1,14 +1,15 @@
 "use client";
 
 import React, { useState } from "react";
-import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
-import { Button } from "./ui/button";
-import { GearIcon, Pencil2Icon } from "@radix-ui/react-icons";
-import { Input } from "./ui/input";
-import TextEditor from "@/components/novel/Editor";
 import { useRouter } from "next/navigation";
 import { mutate } from "swr";
-import { SettingTabs } from "./settings/SettingTabs";
+
+import { GearIcon, Pencil2Icon } from "@radix-ui/react-icons";
+import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { SettingTabs } from "../settings/SettingTabs";
+import TextEditor from "@/components/novel/Editor";
 
 interface PageCount {
   id: number;
