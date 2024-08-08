@@ -9,7 +9,6 @@ import { ScrollArea } from "../../ui/scroll-area";
 import { LoadingSpinner } from "../../ui/loading-spinner";
 
 import { CreatePages, Settings } from "../../SideBtnModal";
-import { PageMenu } from "../../PageMenu/PageMenu";
 import EmptyState from "../../EmptyState";
 
 import { leftSideBarLinks as links } from "@/constants/link";
@@ -21,12 +20,13 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { ChevronsUpDown } from "lucide-react";
-import { useEffect, useState } from "react";
-import { RenamePopover } from "@/components/PageMenu/Rename";
-import { usePathname } from "next/navigation";
+import { useContext } from "react";
+import { IModalContextValue, ModalContext } from "@/context/ModalContext";
 
 const SideBar = () => {
-  const pathname = usePathname().substring(1);
+  const { data, error, isLoading } = useSWR(`/api/pages`, fetcher);
+  const { setMenuPosition, setMenuId, currentPageId }: IModalContextValue =
+    useContext(ModalContext);
 
   const sideBarButtonPages = (
     { id, name, icon: Icon, subpages }: Pages,
@@ -39,7 +39,7 @@ const SideBar = () => {
           key={key}
           className={`${buttonVariants({
             variant: "ghost",
-          })} ${id == pathname ? "bg-accent text-accent-foreground" : ""} !justify-between gap-4 !flex group w-`}
+          })} ${id == currentPageId ? "bg-accent text-accent-foreground" : ""} !justify-between gap-4 !flex group w-`}
         >
           <span
             className={`flex items-center w-full`}
@@ -78,7 +78,7 @@ const SideBar = () => {
               <DotsHorizontalIcon
                 width={20}
                 height={20}
-                onClick={(e) => handleClick(e, parseInt(id))}
+                onClick={(e) => handleMenuClick(e, parseInt(id))}
               />
             </span>
           </span>
@@ -101,7 +101,7 @@ const SideBar = () => {
     );
   };
 
-  const handleClick = (
+  const handleMenuClick = (
     event: React.MouseEvent<SVGElement, MouseEvent>,
     id: number
   ) => {
@@ -121,18 +121,6 @@ const SideBar = () => {
     }
   };
 
-  const { data, error, isLoading } = useSWR(`/api/pages`, fetcher);
-  const [renameOpen, setRenameOpen] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
-  const [menuId, setMenuId] = useState(0);
-
-  useEffect(() => {
-    if (menuPosition.x !== 0 && menuPosition.y !== 0) {
-      setMenuOpen(true);
-    }
-  }, [menuPosition]);
-
   if (error) return <EmptyState />;
   if (isLoading)
     return <LoadingSpinner size={45} className="absolute top-1/2 left-16" />;
@@ -140,20 +128,6 @@ const SideBar = () => {
   return (
     !isLoading && (
       <div className="h-full bg-sidebar">
-        <PageMenu
-          id={menuId}
-          pathname={pathname}
-          menuOpen={menuOpen}
-          menuPosition={menuPosition}
-          setMenuOpen={setMenuOpen}
-          setRenameOpen={setRenameOpen}
-        />
-        <RenamePopover
-          open={renameOpen}
-          setOpen={setRenameOpen}
-          menuPosition={menuPosition}
-          id={menuId}
-        />
         <div className="h-full flex flex-col">
           {links.map((link: string, index: number) =>
             sideBarButton(link, index)

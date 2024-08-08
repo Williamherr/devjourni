@@ -48,7 +48,6 @@ export class PageMap {
       let subpage = this.pageMap.get(subpageId);
       if (subpage) {
         page.subpages[i] = this.appendSubpages(subpage);
-        console.log(page.subpages[i]);
       }
     }
 

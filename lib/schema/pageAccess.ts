@@ -53,9 +53,6 @@ const isUserAuthorized = async (
     )
     .limit(1);
 
-  console.log(access[0]?.accessLevel);
-  console.log(accessLevels.includes(access[0]?.accessLevel));
-
   return accessLevels.includes(access[0]?.accessLevel);
 };
 

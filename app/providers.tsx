@@ -7,6 +7,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { SessionProvider } from "next-auth/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { EditorProvider } from "@/context/EditorContext";
+import { ModalProvider } from "@/context/ModalContext";
 
 const ToasterProvider = () => {
   const { theme } = useTheme() as {
@@ -25,10 +26,12 @@ export default function Providers({ children }: { children: ReactNode }) {
     >
       <SessionProvider>
         <EditorProvider>
-          <ToasterProvider />
-          {children}
-          <Analytics />
-          <SpeedInsights />
+          <ModalProvider>
+            <ToasterProvider />
+            {children}
+            <Analytics />
+            <SpeedInsights />
+          </ModalProvider>
         </EditorProvider>
       </SessionProvider>
     </ThemeProvider>

@@ -6,7 +6,6 @@ import { fetcher, options } from "@/lib/utils";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import EmptyState from "@/components/EmptyState";
 import { isNullOrEmpty } from "@/lib/snippets";
-import { PageMenu } from "@/components/PageMenu/PageMenu";
 
 function Page({ params }: { params: { pageId: number } }) {
   const { data, error, isLoading, isValidating } = useSWR(
